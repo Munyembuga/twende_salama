@@ -1,0 +1,287 @@
+{
+  "@@locale": "en",
+  "appName": "Twende Salama",
+  "fastReliable": "Fast & Reliable Rides",
+  "getToDestination": "Get to your destination on time, every time",
+  "safeSecure": "Safe & Secure",
+  "safetyPriority": "Your safety is our top priority",
+  "affordablePrices": "Affordable Prices",
+  "premiumService": "Enjoy premium service at competitive rates",
+  "bookingTypes": "Booking Types",
+  "failedToLoad": "Failed to load booking types",
+  "retry": "Retry",
+  "loginRequired": "Login Required",
+  "loginMessage": "You need to create an account or log in to book a ride.",
+  "cancel": "Cancel",
+  "login": "Log In",
+  "guestMode": "Guest Mode",
+  "myLocation": "My Location",
+  "bookYourRide": "Book Your Ride",
+  "whereTo": "Where to?",
+  "letsGetYouToDestination": "Let's get you to your destination",
+  "selectCategory": "Select Category",
+  "pickupLocation": "Pickup Location",
+  "gettingCurrentLocation": "Getting current location...",
+  "errorGettingLocation": "Error getting location",
+  "destination": "Destination",
+  "whereAreYouGoing": "Where are you going?",
+  "calculatingDistanceAndFare": "Calculating distance and fare...",
+  "distance": "Distance: {distance}",
+  "@distance": {
+    "placeholders": {
+      "distance": {}
+    }
+  },
+  "duration": "Duration",
+  "startDate": "Start",
+  "endDate": "End",
+  "estimatedFare": "Estimated Fare: {fare} RWF",
+  "@estimatedFare": {
+    "placeholders": {
+      "fare": {}
+    }
+  },
+  "confirmBooking": "Confirm Booking",
+  "confirmBookingWithFare": "Confirm Booking - {fare} RWF",
+  "@confirmBookingWithFare": {
+    "placeholders": {
+      "fare": {}
+    }
+  },
+  "completeYourBooking": "Complete Your Booking",
+  "provideContactInfo": "Please provide your contact information to complete the booking:",
+  "yourName": "Your Name",
+  "enterYourFullName": "Enter your full name",
+  "phoneNumber": "Phone Number",
+  "phoneHint": "0788123456",
+  "privacyInfo": "Your information will only be used for this booking.",
+  "fillAllFields": "Please fill in all fields",
+  "bookingConfirmed": "Booking confirmed! {category} - {fare} RWF",
+  "@bookingConfirmed": {
+    "placeholders": {
+      "category": {},
+      "fare": {}
+    }
+  },
+  "bookingRequestSent": "Booking request sent! You will be contacted shortly.",
+  "bookingFailed": "Booking failed: {message}",
+  "@bookingFailed": {
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "errorBooking": "Error creating booking: {error}",
+  "@errorBooking": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "searchCategories": "Search categories...",
+  "selectACategory": "Select a category",
+  "rentCar": "Rent a Car",
+  "rentCarWithDriver": "Rent a Car with Driver",
+  "rentalOptions": "Select your preferred rental options",
+  "vehicleCategories": "Vehicle Categories",
+  "rentalDurationType": "Rental Duration Type",
+  "daily": "Daily",
+  "weekly": "Weekly",
+  "monthly": "Monthly",
+  "numberOfUnits": "Number of Day(s)",
+  "pickupDate": "Pickup Date",
+  "returnDate": "Return Date",
+  "durationType": "Duration Type: {type}",
+  "@durationType": {
+    "placeholders": {
+      "type": {}
+    }
+  },
+  "totalDuration": "Total Duration: {duration} {unit}",
+  "@totalDuration": {
+    "placeholders": {
+      "duration": {},
+      "unit": {}
+    }
+  },
+  "ratePerDuration": "Rate: {price} RWF per {unit}",
+  "@ratePerDuration": {
+    "placeholders": {
+      "price": {},
+      "unit": {}
+    }
+  },
+  "totalPrice": "Total: {price} RWF",
+  "@totalPrice": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "priceIncludesDriver": "Price includes driver",
+  "confirmRental": "Confirm Rental",
+  "confirmRentalWithPrice": "Confirm Rental - {price} RWF",
+  "@confirmRentalWithPrice": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "completeYourRental": "Complete Your Rental",
+  "provideRentalContactInfo": "Please provide your contact information to complete the rental:",
+  "selectVehicle": "Select Vehicle",
+  "days": "days",
+  "weeks": "weeks",
+  "months": "months",
+  "loadingRentalOptions": "Loading rental options...",
+  "ride": "Ride",
+  "details": "Details",
+  "driver": "Driver",
+  "vehicle": "Vehicle",
+  "from": "From",
+  "to": "To",
+  "date": "Date",
+  "time": "Time",
+  "fare": "Fare",
+  "track": "Track",
+  "cancelRide": "Cancel Ride",
+  "callDriver": "Call Driver",
+  "rideCancelled": "Ride cancelled",
+  "phoneNumberNotAvailable": "Phone number not available",
+  "completed": "Completed",
+  "pending": "Pending",
+  "cancelled": "Cancelled",
+  "unknown": "unknown",
+  "rideHistory": "Ride History",
+  "confirmed": "Confirmed",
+  "onTrip": "On Trip",
+  "startTrip": "Start Trip",
+  "enterOtpMessage": "Please ask the client for the OTP code to start the trip.",
+  "enterOTP": "Enter OTP",
+  "sixDigitCode": "6-digit code",
+  "navigation": "Navigation",
+  "locationCoordsNotAvailable": "Location coordinates not available for navigation",
+  "pause": "Pause",
+  "startNavigation": "Start Navigation",
+  "googleMaps": "Google Maps",
+  "unknownPickup": "Unknown pickup",
+  "unknownDestination": "Unknown destination", 
+  "navigate": "Navigate",
+  "start": "Start",
+  "inProgress": "In Progress",
+  "complete": "Complete",
+  "tripWithId": "Trip {id}",
+  "@tripWithId": {
+    "placeholders": {
+      "id": {}
+    }
+  },
+  "navigateToPickup": "Navigate to Pickup",
+  "startedAt": "Started: {time}",
+  "@startedAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "completedAt": "Completed: {time}",
+  "@completedAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "bookingCode": "Booking",
+  "initialPayment": "Initial Payment",
+  "totalEstimated": "Total Estimated",
+  "cancelBooking": "Cancel Booking",
+  "checkYourCarRentals": "Check Your Car Rentals",
+  "enterPhoneForRentals": "Enter the phone number you used when making the rental booking",
+  "checkYourConfirmedRentals": "Check Your Confirmed Rentals",
+  "contactUs": "Contact Us",
+  "checkYourBookings": "Check Your Bookings",
+  "enterPhoneForBooking": "Enter the phone number you used when making the booking",
+  "checkBookings": "Check Bookings",
+  "noPendingRides": "No Pending Rides",
+  "pendingRidesWillAppearHere": "Your pending rides will appear here",
+  "checkYourActiveTrips": "Check Your Active Trips",
+  "checkActiveTrips": "Check Active Trips",
+  "noActiveTrips": "No Active Trips",
+  "activeTripsWillAppearHere": "Your ongoing trips will appear here",
+  "checkYourCompletedTrips": "Check Your Completed Trips",
+  "checkCompletedTrips": "Check Completed Trips",
+  "noCompletedRides": "No Completed Rides",
+  "completedRidesWillAppearHere": "Your completed rides will appear here",
+  "noCancelledRides": "No Cancelled Rides",
+  "cancelledRidesWillAppearHere": "Your cancelled rides will appear here",
+  "confirm": "Confirm",
+  "statusWithValue": "Status: {status}",
+  "@statusWithValue": {
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "totalWithValue": "Total: {value}",
+  "@totalWithValue": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "provideCancellationReason": "Please provide a reason for cancellation:",
+  "enterReason": "Enter reason...",
+  "pleaseProvideReason": "Please provide a reason",
+  "submit": "Submit",
+  "noConfirmedRides": "No Confirmed Rides",
+  "confirmedRidesWillAppearHere": "Your confirmed rides will appear here",
+  "unknownClient": "Unknown Client",
+  "calculatingRoute": "Calculating best route...",
+  "arrivedAtDestination": "You have arrived at your destination",
+  "signIn": "Sign In",
+  "emailAddress": "Email Address",
+  "enterEmail": "Please enter your email",
+  "enterValidEmail": "Please enter a valid email",
+  "enterPassword": "Please enter your password",
+  "password": "Password",
+  "hidePassword": "Hide password",
+  "showPassword": "Show password",
+  "forgotPassword": "Forgot Password?",
+  "continueWithoutLogin": "Continue without login",
+  "dontHaveAccount": "Don't have an account?",
+  "createAccount": "Create Account",
+  "resetTokenSent": "Reset token sent to your email",
+  "failedToSendToken": "Failed to send reset token",
+  "error": "Error",
+  "tokenVerified": "Reset token verified successfully",
+  "invalidToken": "Invalid reset token",
+  "passwordResetSuccess": "Password reset successfully",
+  "passwordResetFailed": "Failed to reset password",
+  "resetPassword": "Reset Password",
+  "verifyOTP": "Verify OTP",
+  "newPassword": "New Password",
+  "enterEmailForReset": "Enter your email address to receive a reset token",
+  "enterTokenSentTo": "Enter the reset token sent to {email}",
+  "@enterTokenSentTo": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "createNewPassword": "Create your new password",
+  "sendResetToken": "Send Reset Token",
+  "enterResetToken": "Enter Reset Token",
+  "tokenMinLength": "Reset token must be at least 4 digits",
+  "resendResetToken": "Resend Reset Token",
+  "verifyResetToken": "Verify Reset Token",
+  "enterNewPassword": "Please enter new password",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "confirmNewPassword": "Confirm New Password",
+  "confirmPassword": "Please confirm your password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "registrationSuccessful": "Registration successful",
+  "createNewAccount": "Create new account",
+  "completeYourProfile": "Complete Your Profile",
+  "provideDetailsForAccount": "Please provide your details to create your account",
+  "firstName": "First Name",
+  "enterFirstName": "Please enter your first name",
+  "lastName": "Last Name",
+  "enterLastName": "Please enter your last name",
+  "enterPhoneNumber": "Please enter your phone number",
+  "enterValidPhoneNumber": "Please enter a valid phone number",
+  "alreadyHaveAccount": "Already have an account?",
+  "home": "Home",
+  "profile": "Profile",
+  "carRentals": "Car Rentals"
+}
