@@ -1270,6 +1270,198 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Car Rentals'**
   String get carRentals;
+
+  /// No description provided for @rent.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent'**
+  String get rent;
+
+  /// No description provided for @driverProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Profile'**
+  String get driverProfile;
+
+  /// No description provided for @yourProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Profile'**
+  String get yourProfile;
+
+  /// No description provided for @totalRides.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Rides'**
+  String get totalRides;
+
+  /// No description provided for @thisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get thisMonth;
+
+  /// No description provided for @rating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get rating;
+
+  /// No description provided for @securityPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Security & Privacy'**
+  String get securityPrivacy;
+
+  /// No description provided for @enableDriverCalls.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Driver Calls'**
+  String get enableDriverCalls;
+
+  /// No description provided for @allowDriversToCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow drivers to call you during rides'**
+  String get allowDriversToCall;
+
+  /// No description provided for @shareLiveLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Live Location'**
+  String get shareLiveLocation;
+
+  /// No description provided for @shareLocationEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your location with emergency contacts'**
+  String get shareLocationEmergency;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInformation;
+
+  /// No description provided for @paymentMethods.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Methods'**
+  String get paymentMethods;
+
+  /// No description provided for @favoriteDestinations.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite Destinations'**
+  String get favoriteDestinations;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @helpSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get helpSupport;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// No description provided for @selectLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get selectLanguage;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @french.
+  ///
+  /// In en, this message translates to:
+  /// **'Français'**
+  String get french;
+
+  /// No description provided for @areYouSureLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to logout from your account?'**
+  String get areYouSureLogout;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get inactive;
+
+  /// No description provided for @wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get wallet;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get offline;
+
+  /// No description provided for @driverAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Availability'**
+  String get driverAvailability;
+
+  /// No description provided for @toggleAvailabilityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle your availability for accepting rides (Available/Offline)'**
+  String get toggleAvailabilityDescription;
+
+  /// No description provided for @allowPassengersToCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow passengers to call you during rides'**
+  String get allowPassengersToCall;
+
+  /// No description provided for @shareLocationWithApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your location with the app'**
+  String get shareLocationWithApp;
+
+  /// No description provided for @companyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Details'**
+  String get companyDetails;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

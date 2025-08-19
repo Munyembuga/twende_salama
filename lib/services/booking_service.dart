@@ -358,19 +358,19 @@ class BookingService {
   // Get pending bookings for guest users using device_id and phone_number
   static Future<Map<String, dynamic>> getGuestPendingBookings({
     required String deviceId,
-    required String phoneNumber,
+    // required String phoneNumber,
     int page = 1,
   }) async {
     try {
       print(' GET GUEST PENDING BOOKINGS:');
       print(
-          ' URL: ${ApiConstants.baseUrl}booking/pending_booking?device_id=$deviceId&phone_number=$phoneNumber&page=$page');
+          ' URL: ${ApiConstants.baseUrl}booking/pending_booking?device_id=$deviceId&page=$page');
 
       final response = await _dio.get(
         '${ApiConstants.baseUrl}booking/pending_booking',
         queryParameters: {
           'device_id': deviceId,
-          'phone_number': phoneNumber,
+          // 'phone_number': phoneNumber,
           'page': page,
         },
         options: Options(
@@ -426,18 +426,18 @@ class BookingService {
   // Get on-trip bookings for guest users using device_id and phone_number
   static Future<Map<String, dynamic>> getGuestOnTripBookings({
     required String deviceId,
-    required String phoneNumber,
+    // required String phoneNumber,
   }) async {
     try {
       print(' GET GUEST ON-TRIP BOOKINGS:');
       print(
-          ' URL: ${ApiConstants.baseUrl}booking/client_active?device_id=$deviceId&phone_number=$phoneNumber');
+          ' URL: ${ApiConstants.baseUrl}booking/client_active?device_id=$deviceId');
 
       final response = await _dio.get(
         '${ApiConstants.baseUrl}booking/client_active',
         queryParameters: {
           'device_id': deviceId,
-          'phone_number': phoneNumber,
+          // 'phone_number': phoneNumber,
         },
         options: Options(
           headers: {
@@ -598,19 +598,19 @@ class BookingService {
   // Get completed bookings for guest users using device_id and phone_number
   static Future<Map<String, dynamic>> getGuestCompletedBookings({
     required String deviceId,
-    required String phoneNumber,
+    // required String phoneNumber,
     int page = 1,
   }) async {
     try {
       print(' GET GUEST COMPLETED BOOKINGS:');
       print(
-          ' URL: ${ApiConstants.baseUrl}booking/client_completed?device_id=$deviceId&phone_number=$phoneNumber&page=$page');
+          ' URL: ${ApiConstants.baseUrl}booking/client_completed?device_id=$deviceId&page=$page');
 
       final response = await _dio.get(
         '${ApiConstants.baseUrl}booking/client_completed',
         queryParameters: {
           'device_id': deviceId,
-          'phone_number': phoneNumber,
+          // 'phone_number': phoneNumber,
           'page': page,
         },
         options: Options(
@@ -1095,15 +1095,15 @@ class BookingService {
   // Get pending rentals with specific phone number - for guest users
   static Future<Map<String, dynamic>> getPendingRentalsWithPhone({
     required String deviceId,
-    required String phoneNumber,
+    // required String phoneNumber,
   }) async {
     try {
       final url =
-          '${ApiConstants.baseUrl}booking/renting/get_pending_renting?device_id=$deviceId&phone_number=$phoneNumber';
+          '${ApiConstants.baseUrl}booking/renting/get_pending_renting?device_id=$deviceId';
 
       print(' FETCHING PENDING RENTALS WITH PHONE:');
       print(' URL: $url');
-      print(' Phone: $phoneNumber');
+      // print(' Phone: $phoneNumber');
       print(' Device ID: $deviceId');
 
       final response = await _dio.get(url);
@@ -1219,15 +1219,15 @@ class BookingService {
   // Get confirmed rentals with specific phone number - for guest users
   static Future<Map<String, dynamic>> getConfirmedRentalsWithPhone({
     required String deviceId,
-    required String phoneNumber,
+    // required String phoneNumber,
   }) async {
     try {
       final url =
-          '${ApiConstants.baseUrl}booking/renting/get_confirmed_renting?device_id=$deviceId&phone_number=$phoneNumber';
+          '${ApiConstants.baseUrl}booking/renting/get_confirmed_renting?device_id=$deviceId';
 
       print(' FETCHING CONFIRMED RENTALS WITH PHONE:');
       print(' URL: $url');
-      print(' Phone: $phoneNumber');
+      // print(' Phone: $phoneNumber');
       print(' Device ID: $deviceId');
 
       final response = await _dio.get(url);

@@ -79,6 +79,8 @@ class DriverService {
         'status': response.data['status'],
         'message': response.data['message'] ?? 'Status updated successfully',
       };
+      print(
+          "response.data: ${response.data['message']}"); // Debugging line to check response data
     } on DioException catch (e) {
       // Print error details
       print(' DRIVER STATUS UPDATE ERROR:');

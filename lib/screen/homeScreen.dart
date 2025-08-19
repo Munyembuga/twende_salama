@@ -320,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
           ],
         ),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         foregroundColor: Colors.white,
         actions: [
           Padding(
@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
               value: locale,
               icon: const Icon(Icons.language, color: Colors.white),
               underline: Container(),
-              dropdownColor: const Color(0xFFF5141E),
+              dropdownColor: const Color(0xFF07723D),
               items: S.supportedLocales
                   .map<DropdownMenuItem<Locale>>((Locale locale) {
                 final flag = _getFlag(locale.languageCode);
@@ -490,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: _currentCarouselIndex == entry.key
-                      ? const Color(0xFFF5141E)
+                      ? const Color(0xFF07723D)
                       : Colors.grey.withOpacity(0.3),
                 ),
               );
@@ -568,7 +568,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _getCurrentLocation,
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         tooltip: l10n.myLocation,
         child: const Icon(Icons.my_location, color: Colors.white),
       ),

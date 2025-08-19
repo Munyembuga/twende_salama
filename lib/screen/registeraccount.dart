@@ -90,7 +90,7 @@ class _RegistrationNewAccountState extends State<RegistrationNewAccount> {
         automaticallyImplyLeading: false,
         title: Text(s.createNewAccount,
             style: const TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -350,7 +350,7 @@ class _RegistrationNewAccountState extends State<RegistrationNewAccount> {
                         : ElevatedButton(
                             onPressed: _registerUser,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFF5141E),
+                              backgroundColor: const Color(0xFF07723D),
                               foregroundColor: Colors.white,
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(

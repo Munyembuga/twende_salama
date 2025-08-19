@@ -218,7 +218,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       height: 30,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isActive ? const Color(0xFFF5141E) : Colors.grey.shade300,
+        color: isActive ? const Color(0xFF07723D) : Colors.grey.shade300,
       ),
       child: Center(
         child: Text(
@@ -236,7 +236,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Container(
       width: 40,
       height: 2,
-      color: isActive ? const Color(0xFFF5141E) : Colors.grey.shade300,
+      color: isActive ? const Color(0xFF07723D) : Colors.grey.shade300,
     );
   }
 
@@ -284,7 +284,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: ElevatedButton(
             onPressed: isLoading ? null : _sendOTP,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFF5141E),
+              backgroundColor: const Color(0xFF07723D),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
@@ -345,7 +345,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Text(
             s.resendResetToken,
             style: const TextStyle(
-              color: Color(0xFFF5141E),
+              color: Color(0xFF07723D),
               fontSize: 14,
             ),
           ),
@@ -356,7 +356,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: ElevatedButton(
             onPressed: isLoading ? null : _verifyOTP,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFF5141E),
+              backgroundColor: const Color(0xFF07723D),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
@@ -478,7 +478,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: ElevatedButton(
             onPressed: isLoading ? null : _resetPassword,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFF5141E),
+              backgroundColor: const Color(0xFF07723D),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
@@ -505,7 +505,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           _getStepTitle(),
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {

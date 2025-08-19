@@ -200,11 +200,24 @@ class AuthService {
           } else {
             print("ERROR: Missing driver_data in login response");
           }
+        } else if (userRole == '6' && !dataSaved) {
+          // Role 6 user login - save user data without specific role data
+          await StorageService.saveLoginData(
+            token: response.data['token'],
+            userData: response.data['user'],
+            userType: response.data['user_type'],
+          );
+          dataSaved = true;
+          print("Role 6 user data saved successfully");
         } else if (!dataSaved) {
-          return {
-            'success': false,
-            'message': 'Unauthorized user role',
-          };
+          // Other roles - save basic user data
+          await StorageService.saveLoginData(
+            token: response.data['token'],
+            userData: response.data['user'],
+            userType: response.data['user_type'],
+          );
+          dataSaved = true;
+          print("User data saved for role: $userRole");
         }
       }
 
@@ -251,7 +264,7 @@ class AuthService {
           'message': 'Authentication token not found',
         };
       }
-
+      print("token: $token");
       // Set up headers with the bearer token
       final options = Options(
         headers: {
@@ -268,17 +281,32 @@ class AuthService {
         },
         options: options,
       );
+      print("RESPONSE: ${response.data}");
 
-      return {
-        'success': true,
-        'data': response.data,
-        'status': response.data['status'],
-      };
+      // Check if the response indicates success
+      if (response.data['success'] == true) {
+        return {
+          'success': true,
+          'data': response.data,
+          'status': response.data['status'],
+        };
+      } else {
+        // API returned success: false
+        return {
+          'success': false,
+          'message':
+              response.data['message'] ?? 'Failed to update driver status',
+        };
+      }
     } on DioException catch (e) {
       String errorMessage = 'Failed to update driver status';
 
       if (e.response != null) {
-        errorMessage = e.response?.data['message'] ?? errorMessage;
+        // Try to extract the message from the response
+        final responseData = e.response?.data;
+        if (responseData is Map<String, dynamic>) {
+          errorMessage = responseData['message'] ?? errorMessage;
+        }
       } else if (e.type == DioExceptionType.connectionTimeout) {
         errorMessage = 'Connection timeout';
       } else if (e.type == DioExceptionType.receiveTimeout) {

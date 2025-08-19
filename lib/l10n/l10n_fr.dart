@@ -627,4 +627,100 @@ class SFr extends S {
 
   @override
   String get carRentals => 'Location de voitures';
+
+  @override
+  String get rent => 'Location';
+
+  @override
+  String get driverProfile => 'Profil du chauffeur';
+
+  @override
+  String get yourProfile => 'Votre profil';
+
+  @override
+  String get totalRides => 'Total des trajets';
+
+  @override
+  String get thisMonth => 'Ce mois-ci';
+
+  @override
+  String get rating => 'Évaluation';
+
+  @override
+  String get securityPrivacy => 'Sécurité et confidentialité';
+
+  @override
+  String get enableDriverCalls => 'Activer les appels du chauffeur';
+
+  @override
+  String get allowDriversToCall => 'Permettre aux chauffeurs de vous appeler pendant les trajets';
+
+  @override
+  String get shareLiveLocation => 'Partager la position en temps réel';
+
+  @override
+  String get shareLocationEmergency => 'Partager votre position avec les contacts d\'urgence';
+
+  @override
+  String get personalInformation => 'Informations personnelles';
+
+  @override
+  String get paymentMethods => 'Méthodes de paiement';
+
+  @override
+  String get favoriteDestinations => 'Destinations favorites';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get language => 'Langue';
+
+  @override
+  String get helpSupport => 'Aide et support';
+
+  @override
+  String get logout => 'Déconnexion';
+
+  @override
+  String get selectLanguage => 'Sélectionner la langue';
+
+  @override
+  String get english => 'Anglais';
+
+  @override
+  String get french => 'Français';
+
+  @override
+  String get areYouSureLogout => 'Êtes-vous sûr de vouloir vous déconnecter de votre compte?';
+
+  @override
+  String get active => 'Actif';
+
+  @override
+  String get inactive => 'Inactif';
+
+  @override
+  String get wallet => 'Portefeuille';
+
+  @override
+  String get available => 'Disponible';
+
+  @override
+  String get offline => 'Hors ligne';
+
+  @override
+  String get driverAvailability => 'Disponibilité du chauffeur';
+
+  @override
+  String get toggleAvailabilityDescription => 'Basculer votre disponibilité pour accepter les trajets (Disponible/Hors ligne)';
+
+  @override
+  String get allowPassengersToCall => 'Permettre aux passagers de vous appeler pendant les trajets';
+
+  @override
+  String get shareLocationWithApp => 'Partager votre position avec l\'application';
+
+  @override
+  String get companyDetails => 'Détails de l\'entreprise';
 }

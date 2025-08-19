@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:twende/screen/bottomTab.dart';
+import 'package:twende/screen/bottomTabRole6.dart';
 import 'package:twende/screen/login.dart';
 import 'package:twende/screendriver/bottomNavigationdriver.dart';
 import 'package:twende/services/authDriverServices.dart';
@@ -41,6 +42,9 @@ class _SplashScreenState extends State<SplashScreen> {
       // Driver role - start location updates
       await _startDriverLocationService();
       _navigateToDriverScreen();
+    } else if (userRole == '6') {
+      // Role 6 user
+      _navigateToRole6Screen();
     } else {
       // Client or other role
       _navigateToClientScreen();
@@ -71,6 +75,13 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  void _navigateToRole6Screen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => BottomNavigationRole6()),
+    );
+  }
+
   void _navigateToClientScreen() {
     Navigator.pushReplacement(
       context,
@@ -81,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5141E),
+      backgroundColor: const Color(0xFF07723D),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

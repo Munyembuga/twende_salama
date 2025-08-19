@@ -18,27 +18,12 @@ class _ConfirmedRentState extends State<ConfirmedRent> {
   String _errorMessage = '';
   List<Map<String, dynamic>> _confirmedRentals = [];
   bool _isGuestMode = false;
-  final TextEditingController _phoneController = TextEditingController();
   double _totalAmount = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _checkGuestMode();
-    _phoneController.addListener(() {
-      // Clear error message when typing
-      if (_errorMessage.isNotEmpty) {
-        setState(() {
-          _errorMessage = '';
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    super.dispose();
+    _checkGuestModeAndFetchRentals();
   }
 
   Future<void> _launchCommunication(String type) async {
@@ -73,15 +58,14 @@ class _ConfirmedRentState extends State<ConfirmedRent> {
     }
   }
 
-  Future<void> _checkGuestMode() async {
+  Future<void> _checkGuestModeAndFetchRentals() async {
     final isGuest = await StorageService.isGuestMode();
     setState(() {
       _isGuestMode = isGuest;
     });
 
-    if (!isGuest) {
-      _fetchConfirmedRentals();
-    }
+    // Automatically fetch rentals for both guest and registered users
+    _fetchConfirmedRentals();
   }
 
   Future<void> _fetchConfirmedRentals() async {
@@ -94,24 +78,15 @@ class _ConfirmedRentState extends State<ConfirmedRent> {
       Map<String, dynamic> result;
 
       if (_isGuestMode) {
-        final phoneNumber = _phoneController.text.trim();
-        if (phoneNumber.isEmpty) {
-          setState(() {
-            _isLoading = false;
-            _errorMessage = 'Please enter your phone number to check rentals';
-          });
-          return;
-        }
-
+        // For guest users, use only device ID
         final deviceId = await DeviceInfoService.getDeviceId();
 
-        // Custom implementation for guest users with phone number
-        final response = await BookingService.getConfirmedRentalsWithPhone(
+        // Use device ID only for guest users
+        result = await BookingService.getConfirmedRentalsWithPhone(
           deviceId: deviceId,
-          phoneNumber: phoneNumber,
         );
-        result = response;
       } else {
+        // For registered users, use the normal method
         result = await BookingService.getConfirmedRentals();
       }
 
@@ -345,27 +320,6 @@ class _ConfirmedRentState extends State<ConfirmedRent> {
                   ),
                 ),
 
-                // const SizedBox(height: 16),
-
-                // // Pickup location
-                // Row(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     const Icon(
-                //       Icons.location_on,
-                //       size: 16,
-                //       color: Colors.green,
-                //     ),
-                //     const SizedBox(width: 8),
-                //     Expanded(
-                //       child: Text(
-                //         'Pickup: ${rental['pickup_location'] ?? 'Not specified'}',
-                //         style: const TextStyle(fontSize: 14),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-
                 const SizedBox(height: 16),
 
                 // Payment details
@@ -446,119 +400,10 @@ class _ConfirmedRentState extends State<ConfirmedRent> {
                     ),
                   ),
                 ),
-                // const SizedBox(width: 12),
-                // Expanded(
-                //   child: ElevatedButton.icon(
-                //     onPressed: () {
-                //       // Add track order logic
-                //     },
-                //     icon: const Icon(Icons.location_on),
-                //     label: const Text('Track Order'),
-                //     style: ElevatedButton.styleFrom(
-                //       backgroundColor: Colors.green,
-                //       foregroundColor: Colors.white,
-                //       padding: const EdgeInsets.symmetric(vertical: 12),
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildGuestPhoneInput() {
-    final s = S.of(context)!; // Get localization
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.check_circle_outline,
-                size: 64, color: Colors.green),
-            const SizedBox(height: 24),
-            Text(s.checkYourConfirmedRentals,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text(
-              s.enterPhoneForRentals,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: 'Phone Number',
-                hintText: '0788123456',
-                prefixIcon: const Icon(Icons.phone),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.green, width: 2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            if (_errorMessage.isNotEmpty)
-              Text(
-                _errorMessage,
-                style: const TextStyle(color: Colors.red),
-              ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : () {
-                        final phone = _phoneController.text.trim();
-                        if (phone.isNotEmpty) {
-                          FocusScope.of(context).unfocus();
-                          _fetchConfirmedRentals();
-                        } else {
-                          setState(() {
-                            _errorMessage = 'Phone number is required';
-                          });
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text(
-                        'Check Confirmed Rentals',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
       ),
     );
   }
@@ -620,10 +465,6 @@ class _ConfirmedRentState extends State<ConfirmedRent> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isGuestMode && _confirmedRentals.isEmpty) {
-      return _buildGuestPhoneInput();
-    }
-
     return RefreshIndicator(
       onRefresh: _fetchConfirmedRentals,
       child: _isLoading

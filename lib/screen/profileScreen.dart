@@ -77,6 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _handleLogout() async {
+    final s = S.of(context)!;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -109,21 +110,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
+                  color: Color(0xFF07723D).withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.logout,
                   size: 40,
-                  color: Colors.red,
+                  color: Color(0xFF07723D),
                 ),
               ),
               const SizedBox(height: 20),
 
               // Title
-              const Text(
-                'Logout',
-                style: TextStyle(
+              Text(
+                s.logout,
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
@@ -132,10 +133,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 10),
 
               // Message
-              const Text(
-                'Are you sure you want to logout from your account?',
+              Text(
+                s.areYouSureLogout,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
                 ),
@@ -156,9 +157,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
+                      child: Text(
+                        s.cancel,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey,
@@ -180,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           barrierDismissible: false,
                           builder: (context) => const Center(
                             child: CircularProgressIndicator(
-                              color: Colors.red,
+                              color: Color(0xFF07723D),
                             ),
                           ),
                         );
@@ -196,16 +197,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xFF07723D),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
-                        'Logout',
-                        style: TextStyle(
+                      child: Text(
+                        s.logout,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -223,6 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showLanguageDialog() {
+    final s = S.of(context)!;
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     showModalBottomSheet(
@@ -250,9 +252,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               // Title
-              const Text(
-                'Select Language',
-                style: TextStyle(
+              Text(
+                s.selectLanguage,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -262,7 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ...S.supportedLocales.map((locale) {
                 final flag = _getFlag(locale.languageCode);
                 final languageName =
-                    locale.languageCode == 'en' ? 'English' : 'Français';
+                    locale.languageCode == 'en' ? s.english : s.french;
 
                 return ListTile(
                   leading: Text(flag, style: const TextStyle(fontSize: 24)),
@@ -286,7 +288,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel'),
+                  child: Text(s.cancel),
                 ),
               ),
             ],
@@ -308,6 +310,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context)!;
+
     if (isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -319,7 +323,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         preferredSize: const Size.fromHeight(200.0),
         child: Container(
           decoration: const BoxDecoration(
-            color: Color(0xFFDE091E),
+            color: Color(0xFF07723D),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(25),
               bottomRight: Radius.circular(25),
@@ -341,9 +345,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Your Profile',
-                          style: TextStyle(
+                        Text(
+                          s.yourProfile,
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -415,7 +419,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       ),
                                       child: Text(
-                                        'Wallet: $wallet RWF',
+                                        '${s.wallet}: $wallet RWF',
                                         style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,
@@ -452,7 +456,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                status,
+                                status.toLowerCase() == 'active'
+                                    ? s.active
+                                    : s.inactive,
                                 style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.white,
@@ -495,143 +501,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildQuickStat(
-                          'Total Rides', '47', Icons.directions_car),
-                      _buildQuickStat('This Month', '12', Icons.calendar_month),
-                      _buildQuickStat('Rating', '4.8', Icons.star),
+                      _buildQuickStat(s.totalRides, '47', Icons.directions_car),
+                      _buildQuickStat(s.thisMonth, '12', Icons.calendar_month),
+                      _buildQuickStat(s.rating, '4.8', Icons.star),
                     ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-
-            // // Security & Privacy Section
-            // Container(
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(15),
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.grey.withOpacity(0.1),
-            //         spreadRadius: 2,
-            //         blurRadius: 10,
-            //       ),
-            //     ],
-            //   ),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       InkWell(
-            //         onTap: () {
-            //           setState(() {
-            //             _isSecurityExpanded = !_isSecurityExpanded;
-            //           });
-            //         },
-            //         child: Container(
-            //           padding: const EdgeInsets.all(20),
-            //           child: Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               const Row(
-            //                 children: [
-            //                   Icon(
-            //                     Icons.security,
-            //                     color: Color(0xFFA77D55),
-            //                     size: 24,
-            //                   ),
-            //                   SizedBox(width: 12),
-            //                   Text(
-            //                     'Security & Privacy',
-            //                     style: TextStyle(
-            //                       fontSize: 18,
-            //                       fontWeight: FontWeight.bold,
-            //                       color: Color(0xFFA77D55),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //               AnimatedRotation(
-            //                 turns: _isSecurityExpanded ? 0.5 : 0,
-            //                 duration: const Duration(milliseconds: 300),
-            //                 child: const Icon(
-            //                   Icons.keyboard_arrow_down,
-            //                   color: Color(0xFFA77D55),
-            //                   size: 24,
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //       AnimatedContainer(
-            //         duration: const Duration(milliseconds: 300),
-            //         height: _isSecurityExpanded ? null : 0,
-            //         child: _isSecurityExpanded
-            //             ? Column(
-            //                 children: [
-            //                   Container(
-            //                     height: 1,
-            //                     color: Colors.grey.withOpacity(0.2),
-            //                     margin:
-            //                         const EdgeInsets.symmetric(horizontal: 20),
-            //                   ),
-            //                   _buildToggleOption(
-            //                     Icons.phone,
-            //                     'Enable Driver Calls',
-            //                     'Allow drivers to call you during rides',
-            //                     _enableDriverCalls,
-            //                     (value) {
-            //                       setState(() {
-            //                         _enableDriverCalls = value;
-            //                       });
-            //                     },
-            //                   ),
-            //                   _buildToggleOption(
-            //                     Icons.location_on,
-            //                     'Share Live Location',
-            //                     'Share your location with emergency contacts',
-            //                     _shareLiveLocation,
-            //                     (value) {
-            //                       setState(() {
-            //                         _shareLiveLocation = value;
-            //                       });
-            //                     },
-            //                   ),
-            //                   _buildToggleOption(
-            //                     Icons.visibility_off,
-            //                     'Active or inactive ',
-            //                     'Driver are you available for rides?',
-            //                     _privateMode,
-            //                     (value) {
-            //                       setState(() {
-            //                         _privateMode = value;
-            //                       });
-            //                     },
-            //                   ),
-            //                   _buildProfileOption(
-            //                     Icons.lock_outline,
-            //                     'Change Password',
-            //                     () {},
-            //                   ),
-            //                   _buildProfileOption(
-            //                     Icons.verified_user,
-            //                     'Two-Factor Authentication',
-            //                     () {},
-            //                   ),
-            //                   _buildProfileOption(
-            //                     Icons.shield,
-            //                     'Privacy Settings',
-            //                     () {},
-            //                     isLast: true,
-            //                   ),
-            //                 ],
-            //               )
-            //             : const SizedBox.shrink(),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             const SizedBox(height: 20),
 
             // Profile Options
@@ -650,15 +527,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   _buildProfileOption(
-                      Icons.person_outline, 'Personal Information', () {}),
-                  _buildProfileOption(Icons.payment, 'Payment Methods', () {
+                      Icons.person_outline, s.personalInformation, () {}),
+                  _buildProfileOption(Icons.payment, s.paymentMethods, () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const PaymentMethodsScreen()),
                     );
                   }),
-                  _buildProfileOption(Icons.favorite, 'Favorite Destinations',
+                  _buildProfileOption(Icons.favorite, s.favoriteDestinations,
                       () {
                     Navigator.push(
                       context,
@@ -667,18 +544,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const FavoriteDestinationsScreen()),
                     );
                   }),
-                  // _buildProfileOption(
-                  //     Icons.notifications, 'Notifications', () {}),
                   _buildProfileOption(
-                      Icons.language, 'Language', _showLanguageDialog),
-                  _buildProfileOption(Icons.help_outline, 'Help & Support', () {
+                      Icons.language, s.language, _showLanguageDialog),
+                  _buildProfileOption(Icons.help_outline, s.helpSupport, () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const HelpSupportScreen()),
                     );
                   }),
-                  _buildProfileOption(Icons.logout, 'Logout', _handleLogout,
+                  _buildProfileOption(Icons.logout, s.logout, _handleLogout,
                       isLast: true, isLogout: true),
                 ],
               ),
@@ -767,7 +642,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Icon(
               icon,
-              color: isLogout ? Colors.red : Colors.black87,
+              color: isLogout ? Color(0xFF07723D) : Colors.black87,
               weight: 700,
               size: 24,
             ),
@@ -778,13 +653,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: isLogout ? Colors.red : Colors.black87,
+                  color: isLogout ? Color(0xFF07723D) : Colors.black87,
                 ),
               ),
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color: isLogout ? Colors.red : Colors.grey,
+              color: isLogout ? Color(0xFF07723D) : Colors.grey,
               size: 16,
             ),
           ],
@@ -843,4 +718,130 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+}
+
+Widget _buildStatItem(String label, String value, IconData icon) {
+  return Column(
+    children: [
+      Icon(
+        icon,
+        color: const Color(0xFFA77D55),
+        size: 30,
+      ),
+      const SizedBox(height: 8),
+      Text(
+        value,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFFA77D55),
+        ),
+      ),
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.grey,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    ],
+  );
+}
+
+Widget _buildProfileOption(IconData icon, String title, VoidCallback onTap,
+    {bool isLast = false, bool isLogout = false}) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      decoration: BoxDecoration(
+        border: isLast
+            ? null
+            : Border(
+                bottom: BorderSide(
+                  color: Colors.grey.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: isLogout ? Colors.red : Colors.black87,
+            weight: 700,
+            size: 24,
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: isLogout ? Color(0xFF07723D) : Colors.black87,
+              ),
+            ),
+          ),
+          Icon(
+            Icons.arrow_forward_ios,
+            color: isLogout ? Color(0xFF07723D) : Colors.grey,
+            size: 16,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildToggleOption(IconData icon, String title, String subtitle,
+    bool value, Function(bool) onChanged) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+    decoration: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          color: Colors.grey.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+    ),
+    child: Row(
+      children: [
+        Icon(
+          icon,
+          color: const Color(0xFFA77D55),
+          size: 24,
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Switch(
+          value: value,
+          onChanged: onChanged,
+          activeColor: const Color(0xFFA77D55),
+        ),
+      ],
+    ),
+  );
 }

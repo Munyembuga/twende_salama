@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.red,
-        primaryColor: const Color(0xFFF5141E),
+        primaryColor: const Color(0xFF07723D),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       // Configure localization

@@ -627,4 +627,100 @@ class SEn extends S {
 
   @override
   String get carRentals => 'Car Rentals';
+
+  @override
+  String get rent => 'Rent';
+
+  @override
+  String get driverProfile => 'Driver Profile';
+
+  @override
+  String get yourProfile => 'Your Profile';
+
+  @override
+  String get totalRides => 'Total Rides';
+
+  @override
+  String get thisMonth => 'This Month';
+
+  @override
+  String get rating => 'Rating';
+
+  @override
+  String get securityPrivacy => 'Security & Privacy';
+
+  @override
+  String get enableDriverCalls => 'Enable Driver Calls';
+
+  @override
+  String get allowDriversToCall => 'Allow drivers to call you during rides';
+
+  @override
+  String get shareLiveLocation => 'Share Live Location';
+
+  @override
+  String get shareLocationEmergency => 'Share your location with emergency contacts';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get paymentMethods => 'Payment Methods';
+
+  @override
+  String get favoriteDestinations => 'Favorite Destinations';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get helpSupport => 'Help & Support';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get selectLanguage => 'Select Language';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get french => 'Français';
+
+  @override
+  String get areYouSureLogout => 'Are you sure you want to logout from your account?';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get inactive => 'Inactive';
+
+  @override
+  String get wallet => 'Wallet';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get offline => 'Offline';
+
+  @override
+  String get driverAvailability => 'Driver Availability';
+
+  @override
+  String get toggleAvailabilityDescription => 'Toggle your availability for accepting rides (Available/Offline)';
+
+  @override
+  String get allowPassengersToCall => 'Allow passengers to call you during rides';
+
+  @override
+  String get shareLocationWithApp => 'Share your location with the app';
+
+  @override
+  String get companyDetails => 'Company Details';
 }

@@ -147,6 +147,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
           _isLoadingCategories = false;
         });
+        await _setCurrentLocationAsPickup();
 
         print(
             'Loaded ${_categories.length} categories for booking type $bookingTypeId');
@@ -455,7 +456,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 _processBooking();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF5141E),
+                backgroundColor: const Color(0xFF07723D),
                 foregroundColor: Colors.white,
               ),
               child: Text(l10n.confirmBooking),
@@ -568,7 +569,7 @@ class _BookingScreenState extends State<BookingScreen> {
           decoratorProps: DropDownDecoratorProps(
             decoration: InputDecoration(
               hintText: 'Select a category',
-              prefixIcon: const Icon(Icons.category, color: Color(0xFFF5141E)),
+              prefixIcon: const Icon(Icons.category, color: Color(0xFF07723D)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: Colors.grey.shade300),
@@ -576,7 +577,7 @@ class _BookingScreenState extends State<BookingScreen> {
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide:
-                    const BorderSide(color: Color(0xFFF5141E), width: 2),
+                    const BorderSide(color: Color(0xFF07723D), width: 2),
               ),
               filled: true,
               fillColor: Colors.grey[50],
@@ -601,7 +602,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? const Color(0xFFF5141E).withOpacity(0.1)
+                      ? const Color(0xFF07723D).withOpacity(0.1)
                       : isFocused
                           ? Colors.grey.withOpacity(0.1)
                           : null,
@@ -618,12 +619,12 @@ class _BookingScreenState extends State<BookingScreen> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5141E).withOpacity(0.1),
+                        color: const Color(0xFF07723D).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
                         Icons.directions_car,
-                        color: Color(0xFFF5141E),
+                        color: Color(0xFF07723D),
                         size: 20,
                       ),
                     ),
@@ -639,7 +640,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: isSelected
-                                  ? const Color(0xFFF5141E)
+                                  ? const Color(0xFF07723D)
                                   : Colors.black87,
                             ),
                           ),
@@ -658,7 +659,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             item.displayPrice,
                             style: const TextStyle(
                               fontSize: 12,
-                              color: Color(0xFFF5141E),
+                              color: Color(0xFF07723D),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -677,7 +678,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     if (isSelected)
                       const Icon(
                         Icons.check_circle,
-                        color: Color(0xFFF5141E),
+                        color: Color(0xFF07723D),
                         size: 20,
                       ),
                   ],
@@ -722,12 +723,12 @@ class _BookingScreenState extends State<BookingScreen> {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF5141E).withOpacity(0.1),
+                      color: const Color(0xFF07723D).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: const Icon(
                       Icons.directions_car,
-                      color: Color(0xFFF5141E),
+                      color: Color(0xFF07723D),
                       size: 16,
                     ),
                   ),
@@ -749,7 +750,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           selectedItem.displayPrice,
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Color(0xFFF5141E),
+                            color: Color(0xFF07723D),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -774,7 +775,7 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  void _setCurrentLocationAsPickup() async {
+  Future<void> _setCurrentLocationAsPickup() async {
     final l10n = S.of(context)!;
 
     try {
@@ -893,7 +894,7 @@ class _BookingScreenState extends State<BookingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.bookYourRide),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -959,15 +960,15 @@ class _BookingScreenState extends State<BookingScreen> {
                                 padding: EdgeInsets.all(12),
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  color: Color(0xFFF5141E),
+                                  color: Color(0xFF07723D),
                                 ),
                               ),
                             )
                           : const Icon(Icons.location_on,
-                              color: Color(0xFFF5141E)),
+                              color: Color(0xFF07723D)),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.my_location,
-                            color: Color(0xFFF5141E)),
+                            color: Color(0xFF07723D)),
                         onPressed: _isLoadingPickupLocation
                             ? null
                             : _setCurrentLocationAsPickup,
@@ -979,7 +980,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(
-                            color: Color(0xFFF5141E), width: 2),
+                            color: Color(0xFF07723D), width: 2),
                       ),
                       filled: true,
                       fillColor: Colors.grey[50],
@@ -1010,7 +1011,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           children: [
                             const Icon(
                               Icons.location_on,
-                              color: Color(0xFFF5141E),
+                              color: Color(0xFF07723D),
                               size: 20,
                             ),
                             const SizedBox(width: 12),
@@ -1062,7 +1063,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         decoration: InputDecoration(
                           hintText: l10n.whereAreYouGoing,
                           prefixIcon:
-                              const Icon(Icons.flag, color: Color(0xFFF5141E)),
+                              const Icon(Icons.flag, color: Color(0xFF07723D)),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Colors.grey.shade300),
@@ -1070,7 +1071,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                                color: Color(0xFFF5141E), width: 2),
+                                color: Color(0xFF07723D), width: 2),
                           ),
                           filled: true,
                           fillColor: Colors.grey[50],
@@ -1103,10 +1104,10 @@ class _BookingScreenState extends State<BookingScreen> {
                       margin: const EdgeInsets.only(top: 16),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5141E).withOpacity(0.05),
+                        color: const Color(0xFF07723D).withOpacity(0.05),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                            color: const Color(0xFFF5141E).withOpacity(0.2)),
+                            color: const Color(0xFF07723D).withOpacity(0.2)),
                       ),
                       child: _isCalculatingDistance
                           ? Row(
@@ -1116,7 +1117,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   height: 20,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    color: Color(0xFFF5141E),
+                                    color: Color(0xFF07723D),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -1138,7 +1139,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                     Row(
                                       children: [
                                         const Icon(Icons.straighten,
-                                            color: Color(0xFFF5141E), size: 20),
+                                            color: Color(0xFF07723D), size: 20),
                                         const SizedBox(width: 8),
                                         Text(
                                           l10n.distance(_totalDistance),
@@ -1152,7 +1153,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                     Row(
                                       children: [
                                         const Icon(Icons.access_time,
-                                            color: Color(0xFFF5141E), size: 20),
+                                            color: Color(0xFF07723D), size: 20),
                                         const SizedBox(width: 8),
                                         Text(
                                           '${l10n.duration}: $_duration',
@@ -1170,14 +1171,14 @@ class _BookingScreenState extends State<BookingScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     const Icon(Icons.attach_money,
-                                        color: Color(0xFFF5141E), size: 20),
+                                        color: Color(0xFF07723D), size: 20),
                                     Text(
                                       l10n.estimatedFare(
                                           _estimatedFare.toStringAsFixed(0)),
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Color(0xFFF5141E),
+                                        color: Color(0xFF07723D),
                                       ),
                                     ),
                                   ],
@@ -1203,7 +1204,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       .toString())! >
                                   0)
                           ? const LinearGradient(
-                              colors: [Color(0xFFF5141E), Color(0xFFD12A2A)],
+                              colors: [Color(0xFF07723D), Color(0xFF07723D)],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             )

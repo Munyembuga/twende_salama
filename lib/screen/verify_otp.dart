@@ -100,7 +100,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Verify OTP', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -122,7 +122,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     Icon(
                       Icons.mail_outline,
                       size: 80,
-                      color: Color(0xFFF5141E),
+                      color: Color(0xFF07723D),
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -144,7 +144,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFFF5141E),
+                        color: Color(0xFF07723D),
                       ),
                     ),
                     SizedBox(height: 30),
@@ -202,11 +202,11 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
                     // Verify button
                     isLoading
-                        ? CircularProgressIndicator(color: Color(0xFFF5141E))
+                        ? CircularProgressIndicator(color: Color(0xFF07723D))
                         : ElevatedButton(
                             onPressed: _verifyOtp,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFFF5141E),
+                              backgroundColor: Color(0xFF07723D),
                               foregroundColor: Colors.white,
                               minimumSize: Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
@@ -227,7 +227,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                 width: 16,
                                 height: 16,
                                 child: CircularProgressIndicator(
-                                  color: Color(0xFFF5141E),
+                                  color: Color(0xFF07723D),
                                   strokeWidth: 2,
                                 ),
                               ),
@@ -235,7 +235,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                               Text(
                                 "Resending...",
                                 style: TextStyle(
-                                  color: Color(0xFFF5141E),
+                                  color: Color(0xFF07723D),
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

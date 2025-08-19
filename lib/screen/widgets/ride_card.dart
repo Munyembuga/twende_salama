@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class RideCard extends StatelessWidget {
   final Map<String, dynamic> ride;
+  // final bool showOtp;
 
   const RideCard({Key? key, required this.ride}) : super(key: key);
 
@@ -79,6 +80,43 @@ class RideCard extends StatelessWidget {
                 ),
               ],
             ),
+
+            // Show OTP if available and showOtp is true
+            if (ride['otp'] != null)
+              Container(
+                margin: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFA77D55).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                      color: const Color(0xFFA77D55).withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.lock, size: 16, color: Color(0xFFA77D55)),
+                    const SizedBox(width: 8),
+                    Text(
+                      'OTP: ',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Text(
+                      '${ride['otp']}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFA77D55),
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
             const SizedBox(height: 12),
 
             // Route information

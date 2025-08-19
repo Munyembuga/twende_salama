@@ -13,7 +13,7 @@ class BookingDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Booking ${booking.bookingCode}'),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -361,7 +361,7 @@ class BookingDetailScreen extends StatelessWidget {
                         '${_formatPrice(booking.estimatedPrice)} RWF',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFFF5141E),
+                          color: Color(0xFF07723D),
                         ),
                       ),
                     ],
@@ -400,13 +400,13 @@ class BookingDetailScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundColor: const Color(0xFFF5141E).withOpacity(0.1),
+                  backgroundColor: const Color(0xFF07723D).withOpacity(0.1),
                   child: Text(
                     '${driver.firstName[0]}${driver.lastName[0]}',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFF5141E),
+                      color: Color(0xFF07723D),
                     ),
                   ),
                 ),

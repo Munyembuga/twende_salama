@@ -88,7 +88,7 @@ class _BottomNavigationScreenState extends State<BottomNavigation> {
             TextButton(
               child: Text(
                 s.login,
-                style: const TextStyle(color: Color(0xFFF5141E)),
+                style: const TextStyle(color: Color(0xFF07723D)),
               ),
               onPressed: () {
                 StorageService.clearGuestSession().then((_) {
@@ -115,7 +115,7 @@ class _BottomNavigationScreenState extends State<BottomNavigation> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         elevation: 10,
         type: BottomNavigationBarType.fixed,
         selectedLabelStyle: const TextStyle(
@@ -139,7 +139,7 @@ class _BottomNavigationScreenState extends State<BottomNavigation> {
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.car_rental),
-            label: 'Rent',
+            label: s.rent,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.person_2_outlined),

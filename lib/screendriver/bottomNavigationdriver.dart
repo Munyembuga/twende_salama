@@ -32,7 +32,7 @@ class _BottomNavigationDriverScreenState extends State<BottomNavigationDriver> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
-        backgroundColor: Color(0xFFF5141E),
+        backgroundColor: Color(0xFF07723D),
         elevation: 10,
         type: BottomNavigationBarType.fixed,
         selectedLabelStyle: const TextStyle(

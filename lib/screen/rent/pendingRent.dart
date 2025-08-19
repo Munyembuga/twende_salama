@@ -19,7 +19,6 @@ class _PendingRentState extends State<PendingRent> {
   String _errorMessage = '';
   List<Map<String, dynamic>> _pendingRentals = [];
   bool _isGuestMode = false;
-  final TextEditingController _phoneController = TextEditingController();
 
   // Add variables for payments
   bool _isLoadingPaymentModes = false;
@@ -36,14 +35,6 @@ class _PendingRentState extends State<PendingRent> {
   void initState() {
     super.initState();
     _checkGuestMode();
-    _phoneController.addListener(() {
-      // Clear error message when typing
-      if (_errorMessage.isNotEmpty) {
-        setState(() {
-          _errorMessage = '';
-        });
-      }
-    });
 
     // Pre-fetch payment modes on app start for better performance
     _fetchPaymentModes();
@@ -52,7 +43,6 @@ class _PendingRentState extends State<PendingRent> {
   @override
   void dispose() {
     _paymentAmountController.dispose();
-    _phoneController.dispose();
     super.dispose();
   }
 
@@ -292,13 +282,13 @@ class _PendingRentState extends State<PendingRent> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5141E).withOpacity(0.1),
+                        color: const Color(0xFF07723D).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
                           const Icon(Icons.info_outline,
-                              color: Color(0xFFF5141E)),
+                              color: Color(0xFF07723D)),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -326,7 +316,7 @@ class _PendingRentState extends State<PendingRent> {
                         children: [
                           Text(
                             'Enter initial amount to pay: $_initialPaymentAmount RWF  -  ${_estimatedFare.toStringAsFixed(0)} RWF',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
@@ -354,7 +344,7 @@ class _PendingRentState extends State<PendingRent> {
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide:
-                                    const BorderSide(color: Color(0xFFF5141E)),
+                                    const BorderSide(color: Color(0xFF07723D)),
                               ),
                             ),
                           ),
@@ -398,7 +388,7 @@ class _PendingRentState extends State<PendingRent> {
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Color(0xFFF5141E)),
+                                        Color(0xFF07723D)),
                                   ),
                                 ),
                                 SizedBox(height: 10),
@@ -470,7 +460,7 @@ class _PendingRentState extends State<PendingRent> {
                                             Icon(
                                                 _getIconForPaymentMode(
                                                     iconName),
-                                                color: const Color(0xFFF5141E)),
+                                                color: const Color(0xFF07723D)),
                                             const SizedBox(width: 12),
                                             Expanded(
                                               child: Text(
@@ -497,7 +487,7 @@ class _PendingRentState extends State<PendingRent> {
                                     Container(
                                       padding: const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFFF5141E)
+                                        color: const Color(0xFF07723D)
                                             .withOpacity(0.05),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -511,7 +501,7 @@ class _PendingRentState extends State<PendingRent> {
                                                       _selectedPaymentMode![
                                                           'mode_name']),
                                             ),
-                                            color: const Color(0xFFF5141E),
+                                            color: const Color(0xFF07723D),
                                           ),
                                           const SizedBox(width: 12),
                                           Expanded(
@@ -572,7 +562,7 @@ class _PendingRentState extends State<PendingRent> {
                                 _processPayment(enteredAmount);
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF5141E),
+                          backgroundColor: const Color(0xFF07723D),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -581,6 +571,7 @@ class _PendingRentState extends State<PendingRent> {
                           'Confirm Payment Method',
                           style: TextStyle(
                             fontSize: 16,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -597,7 +588,7 @@ class _PendingRentState extends State<PendingRent> {
     );
   }
 
-  // Update process payment to accept the payment amount parameter
+  // Update process payment to not use phone number for guest users
   Future<void> _processPayment([double? customAmount]) async {
     if (_selectedPaymentMode == null || _currentBookingId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -637,7 +628,7 @@ class _PendingRentState extends State<PendingRent> {
         bookingId: _currentBookingId,
         paymentAmount: paymentAmount, // Use the custom or default amount
         paymentModeId: _selectedPaymentMode?['payment_mode_id'],
-        phoneNumber: _isGuestMode ? _phoneController.text.trim() : null,
+        phoneNumber: null, // Remove phone number parameter
       );
 
       // Close loading dialog
@@ -685,9 +676,8 @@ class _PendingRentState extends State<PendingRent> {
       _isGuestMode = isGuest;
     });
 
-    if (!isGuest) {
-      _fetchPendingRentals();
-    }
+    // Auto-fetch rentals for both guest and logged-in users
+    _fetchPendingRentals();
   }
 
   Future<void> _fetchPendingRentals() async {
@@ -700,21 +690,11 @@ class _PendingRentState extends State<PendingRent> {
       Map<String, dynamic> result;
 
       if (_isGuestMode) {
-        final phoneNumber = _phoneController.text.trim();
-        if (phoneNumber.isEmpty) {
-          setState(() {
-            _isLoading = false;
-            _errorMessage = 'Please enter your phone number to check rentals';
-          });
-          return;
-        }
-
         final deviceId = await DeviceInfoService.getDeviceId();
-
-        // Custom implementation for guest users with phone number
+        print('Guest mode detected. Device ID: $deviceId');
+        // Custom implementation for guest users with device ID only
         final response = await BookingService.getPendingRentalsWithPhone(
           deviceId: deviceId,
-          phoneNumber: phoneNumber,
         );
         result = response;
       } else {
@@ -777,7 +757,7 @@ class _PendingRentState extends State<PendingRent> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5141E).withOpacity(0.1),
+              color: const Color(0xFF07723D).withOpacity(0.1),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
@@ -797,7 +777,7 @@ class _PendingRentState extends State<PendingRent> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5141E).withOpacity(0.2),
+                    color: const Color(0xFF07723D).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
@@ -831,7 +811,7 @@ class _PendingRentState extends State<PendingRent> {
                       child: const Icon(
                         Icons.directions_car,
                         size: 24,
-                        color: Color(0xFFF5141E),
+                        color: Color(0xFF07723D),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -918,7 +898,7 @@ class _PendingRentState extends State<PendingRent> {
                           ),
                           const Icon(
                             Icons.arrow_forward,
-                            color: Color(0xFFF5141E),
+                            color: Color(0xFF07723D),
                             size: 16,
                           ),
                           Expanded(
@@ -995,7 +975,7 @@ class _PendingRentState extends State<PendingRent> {
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Color(0xFFF5141E),
+                              color: Color(0xFF07723D),
                             ),
                           ),
                         ],
@@ -1036,7 +1016,7 @@ class _PendingRentState extends State<PendingRent> {
                       _showPaymentOptionsBottomSheet(rental);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFF5141E),
+                      backgroundColor: const Color(0xFF07723D),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
@@ -1054,108 +1034,13 @@ class _PendingRentState extends State<PendingRent> {
     );
   }
 
-  Widget _buildGuestPhoneInput() {
-    final s = S.of(context)!; // Get localization
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.car_rental, size: 64, color: Color(0xFFF5141E)),
-            const SizedBox(height: 24),
-            Text(s.checkYourCarRentals,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text(
-              s.enterPhoneForRentals,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: s.phoneNumber,
-                hintText: s.phoneHint,
-                prefixIcon: const Icon(Icons.phone),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      const BorderSide(color: Color(0xFFF5141E), width: 2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            if (_errorMessage.isNotEmpty)
-              Text(
-                _errorMessage,
-                style: const TextStyle(color: Colors.red),
-              ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : () {
-                        final phone = _phoneController.text.trim();
-                        if (phone.isNotEmpty) {
-                          FocusScope.of(context).unfocus();
-                          _fetchPendingRentals();
-                        } else {
-                          setState(() {
-                            _errorMessage = 'Phone number is required';
-                          });
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF5141E),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text(
-                        'Check Rentals',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_isGuestMode && _pendingRentals.isEmpty) {
-      return _buildGuestPhoneInput();
-    }
-
     return RefreshIndicator(
       onRefresh: _fetchPendingRentals,
       child: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFFF5141E)),
+              child: CircularProgressIndicator(color: Color(0xFF07723D)),
             )
           : _errorMessage.isNotEmpty
               ? Center(
@@ -1177,7 +1062,7 @@ class _PendingRentState extends State<PendingRent> {
                       ElevatedButton(
                         onPressed: _fetchPendingRentals,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF5141E),
+                          backgroundColor: const Color(0xFF07723D),
                         ),
                         child: const Text('Try Again'),
                       ),
@@ -1217,7 +1102,7 @@ class _PendingRentState extends State<PendingRent> {
                               // Navigate to booking screen
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFF5141E),
+                              backgroundColor: const Color(0xFF07723D),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 12,

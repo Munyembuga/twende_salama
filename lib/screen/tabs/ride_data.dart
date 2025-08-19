@@ -46,6 +46,7 @@ class RideData {
       'driver': driverName,
       'vehicle': vehicleInfo,
       'phone': phone,
+      'otp': booking['otp']?.toString(),
       'raw_booking': booking, // Keep the raw data for additional details
     };
   }

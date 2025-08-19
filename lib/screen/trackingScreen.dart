@@ -36,7 +36,7 @@ class _TrackingScreenState extends State<TrackingScreen>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(s.rideHistory),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         foregroundColor: Colors.white,
         bottom: TabBar(
           controller: _tabController,

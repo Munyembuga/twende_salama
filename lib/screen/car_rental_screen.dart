@@ -410,7 +410,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFFF5141E),
+              primary: Color(0xFF07723D),
               onPrimary: Colors.white,
             ),
           ),
@@ -427,7 +427,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
           return Theme(
             data: Theme.of(context).copyWith(
               colorScheme: const ColorScheme.light(
-                primary: Color(0xFFF5141E),
+                primary: Color(0xFF07723D),
                 onPrimary: Colors.white,
               ),
             ),
@@ -473,7 +473,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFFF5141E),
+              primary: Color(0xFF07723D),
               onPrimary: Colors.white,
             ),
           ),
@@ -490,7 +490,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
           return Theme(
             data: Theme.of(context).copyWith(
               colorScheme: const ColorScheme.light(
-                primary: Color(0xFFF5141E),
+                primary: Color(0xFF07723D),
                 onPrimary: Colors.white,
               ),
             ),
@@ -544,7 +544,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
             ),
             TextButton(
               child: const Text('Log In',
-                  style: TextStyle(color: Color(0xFFF5141E))),
+                  style: TextStyle(color: Color(0xFF07723D))),
               onPressed: () {
                 // Clear guest session and navigate to login
                 StorageService.clearGuestSession().then((_) {
@@ -652,7 +652,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                 _processRental();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF5141E),
+                backgroundColor: const Color(0xFF07723D),
                 foregroundColor: Colors.white,
               ),
               child: const Text('Confirm Rental'),
@@ -730,7 +730,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
         title: Text(widget.bookingTypeId == '3'
             ? S.of(context)?.rentCarWithDriver ?? 'Rent Car with Driver'
             : S.of(context)?.rentCar ?? 'Rent Car'),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -817,7 +817,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                               decoration: InputDecoration(
                                 hintText: 'Select Pickup Date',
                                 prefixIcon: const Icon(Icons.calendar_today,
-                                    color: Color(0xFFF5141E)),
+                                    color: Color(0xFF07723D)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide:
@@ -826,7 +826,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: const BorderSide(
-                                      color: Color(0xFFF5141E), width: 2),
+                                      color: Color(0xFF07723D), width: 2),
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey[50],
@@ -856,7 +856,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                               decoration: InputDecoration(
                                 hintText: 'Select Return Date',
                                 prefixIcon: const Icon(Icons.abc_outlined,
-                                    color: Color(0xFFF5141E)),
+                                    color: Color(0xFF07723D)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide:
@@ -865,7 +865,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: const BorderSide(
-                                      color: Color(0xFFF5141E), width: 2),
+                                      color: Color(0xFF07723D), width: 2),
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey[50],
@@ -884,10 +884,10 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                     margin: const EdgeInsets.only(top: 16),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF5141E).withOpacity(0.05),
+                      color: const Color(0xFF07723D).withOpacity(0.05),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                          color: const Color(0xFFF5141E).withOpacity(0.2)),
+                          color: const Color(0xFF07723D).withOpacity(0.2)),
                     ),
                     child: Column(
                       children: [
@@ -897,7 +897,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                             Row(
                               children: [
                                 const Icon(Icons.access_time,
-                                    color: Color(0xFFF5141E), size: 20),
+                                    color: Color(0xFF07723D), size: 20),
                                 const SizedBox(width: 8),
                                 Text(
                                   S.of(context)?.durationType(
@@ -927,7 +927,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                             Row(
                               children: [
                                 const Icon(Icons.calendar_month,
-                                    color: Color(0xFFF5141E), size: 20),
+                                    color: Color(0xFF07723D), size: 20),
                                 const SizedBox(width: 8),
                                 Text(
                                   S.of(context)?.totalDuration(
@@ -954,7 +954,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                                 Row(
                                   children: [
                                     const Icon(Icons.monetization_on,
-                                        color: Color(0xFFF5141E), size: 20),
+                                        color: Color(0xFF07723D), size: 20),
                                     const SizedBox(width: 8),
                                     Text(
                                       'Rate: ${_pricesByType[_selectedDurationType]?.toInt()} RWF per $_selectedDurationType',
@@ -997,7 +997,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Icon(Icons.attach_money,
-                                color: Color(0xFFF5141E), size: 24),
+                                color: Color(0xFF07723D), size: 24),
                             Text(
                               S.of(context)?.totalPrice(
                                       '${_estimatedFare.toInt()}') ??
@@ -1005,7 +1005,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFFF5141E),
+                                color: Color(0xFF07723D),
                               ),
                             ),
                           ],
@@ -1037,7 +1037,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       gradient: const LinearGradient(
-                        colors: [Color(0xFFF5141E), Color(0xFFD12A2A)],
+                        colors: [Color(0xFF07723D), Color(0xFF07723D)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -1146,7 +1146,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
             decoration: InputDecoration(
               hintText: 'Select a vehicle',
               prefixIcon:
-                  const Icon(Icons.directions_car, color: Color(0xFFF5141E)),
+                  const Icon(Icons.directions_car, color: Color(0xFF07723D)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: Colors.grey.shade300),
@@ -1154,7 +1154,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide:
-                    const BorderSide(color: Color(0xFFF5141E), width: 2),
+                    const BorderSide(color: Color(0xFF07723D), width: 2),
               ),
               filled: true,
               fillColor: Colors.grey[50],
@@ -1179,7 +1179,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? const Color(0xFFF5141E).withOpacity(0.1)
+                      ? const Color(0xFF07723D).withOpacity(0.1)
                       : isFocused
                           ? Colors.grey.withOpacity(0.1)
                           : null,
@@ -1196,12 +1196,12 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5141E).withOpacity(0.1),
+                        color: const Color(0xFF07723D).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
                         Icons.directions_car,
-                        color: Color(0xFFF5141E),
+                        color: Color(0xFF07723D),
                         size: 20,
                       ),
                     ),
@@ -1217,7 +1217,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: isSelected
-                                  ? const Color(0xFFF5141E)
+                                  ? const Color(0xFF07723D)
                                   : Colors.black87,
                             ),
                           ),
@@ -1236,7 +1236,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                             item.displayPrice,
                             style: const TextStyle(
                               fontSize: 12,
-                              color: Color(0xFFF5141E),
+                              color: Color(0xFF07723D),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -1256,7 +1256,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                     if (isSelected)
                       const Icon(
                         Icons.check_circle,
-                        color: Color(0xFFF5141E),
+                        color: Color(0xFF07723D),
                         size: 20,
                       ),
                   ],
@@ -1302,12 +1302,12 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF5141E).withOpacity(0.1),
+                      color: const Color(0xFF07723D).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: const Icon(
                       Icons.directions_car,
-                      color: Color(0xFFF5141E),
+                      color: Color(0xFF07723D),
                       size: 16,
                     ),
                   ),
@@ -1329,7 +1329,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                           selectedItem.displayPrice,
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Color(0xFFF5141E),
+                            color: Color(0xFF07723D),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -1396,7 +1396,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
               topLeft: Radius.circular(12),
               bottomLeft: Radius.circular(12),
             ),
-            color: const Color(0xFFF5141E).withOpacity(0.1),
+            color: const Color(0xFF07723D).withOpacity(0.1),
             child: InkWell(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
@@ -1414,7 +1414,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                 width: 48,
                 height: 54,
                 alignment: Alignment.center,
-                child: Icon(Icons.remove, color: const Color(0xFFF5141E)),
+                child: Icon(Icons.remove, color: const Color(0xFF07723D)),
               ),
             ),
           ),
@@ -1452,7 +1452,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
               topRight: Radius.circular(12),
               bottomRight: Radius.circular(12),
             ),
-            color: const Color(0xFFF5141E).withOpacity(0.1),
+            color: const Color(0xFF07723D).withOpacity(0.1),
             child: InkWell(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(12),
@@ -1468,7 +1468,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                 width: 48,
                 height: 54,
                 alignment: Alignment.center,
-                child: Icon(Icons.add, color: const Color(0xFFF5141E)),
+                child: Icon(Icons.add, color: const Color(0xFF07723D)),
               ),
             ),
           ),

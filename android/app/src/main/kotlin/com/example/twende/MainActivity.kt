@@ -1,4 +1,4 @@
-package com.sangotaxi.itecmove
+package com.twendesalama.twende
 
 import io.flutter.embedding.android.FlutterActivity
 

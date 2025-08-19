@@ -22,20 +22,11 @@ class _OnTripTabState extends State<OnTripTab> {
   List<dynamic> _onTripBookings = [];
   bool _clientOnTrip = false;
   bool _isGuestMode = false;
-  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _checkGuestMode();
-    _phoneController.addListener(() {
-      // Clear error message when typing
-      if (_errorMessage.isNotEmpty) {
-        setState(() {
-          _errorMessage = '';
-        });
-      }
-    });
   }
 
   Future<void> _checkGuestMode() async {
@@ -44,9 +35,8 @@ class _OnTripTabState extends State<OnTripTab> {
       _isGuestMode = isGuest;
     });
 
-    if (!isGuest) {
-      _fetchOnTripBookings();
-    }
+    // Auto-fetch bookings for both guest and logged-in users
+    _fetchOnTripBookings();
   }
 
   Future<void> _handleTokenExpiry() async {
@@ -67,9 +57,6 @@ class _OnTripTabState extends State<OnTripTab> {
   }
 
   Future<void> _fetchOnTripBookings({bool refresh = false}) async {
-    // Remove the early return that was preventing execution when loading
-    // if (_isLoading) return;
-
     if (refresh) {
       setState(() {
         _isLoading = true;
@@ -87,21 +74,10 @@ class _OnTripTabState extends State<OnTripTab> {
       Map<String, dynamic> response;
 
       if (_isGuestMode) {
-        final phoneNumber = _phoneController.text.trim();
-        if (phoneNumber.isEmpty) {
-          setState(() {
-            _isLoading = false;
-            _errorMessage =
-                'Please enter your phone number to check active trips';
-          });
-          return;
-        }
-
         final deviceId = await DeviceInfoService.getDeviceId();
 
         response = await BookingService.getGuestOnTripBookings(
           deviceId: deviceId,
-          phoneNumber: phoneNumber,
         );
       } else {
         response = await BookingService.getOnTripBookings();
@@ -133,10 +109,6 @@ class _OnTripTabState extends State<OnTripTab> {
   @override
   Widget build(BuildContext context) {
     final s = S.of(context)!;
-
-    if (_isGuestMode && _onTripBookings.isEmpty) {
-      return _buildGuestPhoneInput();
-    }
 
     if (_isLoading && _onTripBookings.isEmpty) {
       return const Center(child: CircularProgressIndicator());
@@ -186,101 +158,8 @@ class _OnTripTabState extends State<OnTripTab> {
     );
   }
 
-  Widget _buildGuestPhoneInput() {
-    final s = S.of(context)!;
-
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.directions_car_outlined,
-                size: 64, color: Color(0xFFF5141E)),
-            const SizedBox(height: 24),
-            Text(s.checkYourActiveTrips,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text(
-              s.enterPhoneForBooking,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: s.phoneNumber,
-                hintText: s.phoneHint,
-                prefixIcon: const Icon(Icons.phone),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      const BorderSide(color: Color(0xFFF5141E), width: 2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            if (_errorMessage.isNotEmpty)
-              Text(
-                _errorMessage,
-                style: const TextStyle(color: Colors.red),
-              ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : () {
-                        final phone = _phoneController.text.trim();
-                        if (phone.isNotEmpty) {
-                          FocusScope.of(context).unfocus();
-                          _fetchOnTripBookings(refresh: true);
-                        } else {
-                          setState(() {
-                            _errorMessage = s.pleaseProvideReason;
-                          });
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF5141E),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : Text(
-                        s.checkActiveTrips,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   void dispose() {
-    _phoneController.dispose();
     super.dispose();
   }
 }

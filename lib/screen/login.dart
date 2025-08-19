@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:twende/l10n/l10n.dart';
 import 'package:twende/main.dart';
 import 'package:twende/screen/bottomTab.dart';
+import 'package:twende/screen/bottomTabRole6.dart';
 import 'package:twende/screen/forgetPassword.dart';
 import 'package:twende/screen/registeraccount.dart';
 import 'package:twende/screendriver/bottomNavigationdriver.dart';
@@ -65,6 +66,14 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => BottomNavigationDriver(),
+          ),
+        );
+      } else if (userRole == '6') {
+        // Navigate to role 6 screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomNavigationRole6(),
           ),
         );
       } else {
@@ -153,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
             style: const TextStyle(
               color: Colors.white,
             )),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 25.0), // Adjust as needed
@@ -161,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
               value: locale,
               icon: const Icon(Icons.language, color: Colors.white),
               underline: Container(),
-              dropdownColor: const Color(0xFFF5141E),
+              dropdownColor: const Color(0xFF07723D),
               items: S.supportedLocales
                   .map<DropdownMenuItem<Locale>>((Locale locale) {
                 final flag = _getFlag(locale.languageCode);
@@ -342,7 +351,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(
                           s.forgotPassword,
                           style: const TextStyle(
-                            color: Color(0xFFF5141E),
+                            color: Color(0xFF07723D),
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -367,11 +376,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     Center(
                       child: isLoading
                           ? const CircularProgressIndicator(
-                              color: Color(0xFFF5141E))
+                              color: Color(0xFF07723D))
                           : ElevatedButton(
                               onPressed: _login,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFF5141E),
+                                backgroundColor: const Color(0xFF07723D),
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 90, vertical: 16),

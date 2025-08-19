@@ -141,12 +141,12 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
           );
         } else {
           _statusUpdateMessage = result['message'];
-
+          print("Status update failed: ${result['message']}");
           // Show an error snackbar
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(result['message']),
-              backgroundColor: Colors.red,
+              backgroundColor: Color(0xFF07723D),
             ),
           );
         }
@@ -155,12 +155,12 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
       setState(() {
         _isUpdatingStatus = false;
         _statusUpdateMessage = 'Failed to update status: $e';
-
+        print("Error updating driver status: $e");
         // Show an error snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error updating status: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Color(0xFF07723D),
           ),
         );
       });
@@ -168,6 +168,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
   }
 
   Future<void> _handleLogout() async {
+    final s = S.of(context)!;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -200,21 +201,21 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
+                  color: Color(0xFF07723D).withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.logout,
                   size: 40,
-                  color: Colors.red,
+                  color: Color(0xFF07723D),
                 ),
               ),
               const SizedBox(height: 20),
 
               // Title
-              const Text(
-                'Logout',
-                style: TextStyle(
+              Text(
+                s.logout,
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
@@ -223,10 +224,10 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
               const SizedBox(height: 10),
 
               // Message
-              const Text(
-                'Are you sure you want to logout from your account?',
+              Text(
+                s.areYouSureLogout,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
                 ),
@@ -247,9 +248,9 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
+                      child: Text(
+                        s.cancel,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey,
@@ -271,7 +272,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                           barrierDismissible: false,
                           builder: (context) => const Center(
                             child: CircularProgressIndicator(
-                              color: Colors.red,
+                              color: Color(0xFF07723D),
                             ),
                           ),
                         );
@@ -287,16 +288,16 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xFF07723D),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
-                        'Logout',
-                        style: TextStyle(
+                      child: Text(
+                        s.logout,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -305,6 +306,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
             ],
           ),
         );
@@ -313,6 +315,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
   }
 
   void _showLanguageDialog() {
+    final s = S.of(context)!;
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     showModalBottomSheet(
@@ -340,9 +343,9 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                 ),
               ),
               // Title
-              const Text(
-                'Select Language',
-                style: TextStyle(
+              Text(
+                s.selectLanguage,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -352,7 +355,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
               ...S.supportedLocales.map((locale) {
                 final flag = _getFlag(locale.languageCode);
                 final languageName =
-                    locale.languageCode == 'en' ? 'English' : 'Français';
+                    locale.languageCode == 'en' ? s.english : s.french;
 
                 return ListTile(
                   leading: Text(flag, style: const TextStyle(fontSize: 24)),
@@ -376,7 +379,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel'),
+                  child: Text(s.cancel),
                 ),
               ),
             ],
@@ -398,6 +401,8 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context)!;
+
     if (isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -409,7 +414,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
         preferredSize: const Size.fromHeight(200.0),
         child: Container(
           decoration: const BoxDecoration(
-            color: Color(0xFFDE091E),
+            color: Color(0xFF07723D),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(25),
               bottomRight: Radius.circular(25),
@@ -431,9 +436,9 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Driver Profile',
-                          style: TextStyle(
+                        Text(
+                          s.driverProfile,
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -507,7 +512,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                                         ),
                                       ),
                                       child: Text(
-                                        'Wallet: $wallet RWF',
+                                        '${s.wallet}: $wallet RWF',
                                         style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,
@@ -543,7 +548,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                _privateMode ? 'Available' : 'Offline',
+                                _privateMode ? s.available : s.offline,
                                 style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.white,
@@ -586,10 +591,9 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildQuickStat(
-                          'Total Rides', '47', Icons.directions_car),
-                      _buildQuickStat('This Month', '12', Icons.calendar_month),
-                      _buildQuickStat('Rating', '4.8', Icons.star),
+                      _buildQuickStat(s.totalRides, '47', Icons.directions_car),
+                      _buildQuickStat(s.thisMonth, '12', Icons.calendar_month),
+                      _buildQuickStat(s.rating, '4.8', Icons.star),
                     ],
                   ),
                 ],
@@ -624,17 +628,17 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Row(
+                          Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.security,
                                 color: Color(0xFFA77D55),
                                 size: 24,
                               ),
-                              SizedBox(width: 12),
+                              const SizedBox(width: 12),
                               Text(
-                                'Security & Privacy',
-                                style: TextStyle(
+                                s.securityPrivacy,
+                                style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFFA77D55),
@@ -669,8 +673,8 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                               ),
                               _buildToggleOption(
                                 Icons.phone,
-                                'Enable Driver Calls',
-                                'Allow passengers to call you during rides',
+                                s.enableDriverCalls,
+                                s.allowPassengersToCall,
                                 _enableDriverCalls,
                                 (value) {
                                   setState(() {
@@ -680,8 +684,8 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                               ),
                               _buildToggleOption(
                                 Icons.location_on,
-                                'Share Live Location',
-                                'Share your location with the app',
+                                s.shareLiveLocation,
+                                s.shareLocationWithApp,
                                 _shareLiveLocation,
                                 (value) {
                                   setState(() {
@@ -702,8 +706,8 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                                     )
                                   : _buildToggleOption(
                                       Icons.radio_button_checked,
-                                      'Driver Availability',
-                                      'Toggle your availability for accepting rides (Available/Offline)',
+                                      s.driverAvailability,
+                                      s.toggleAvailabilityDescription,
                                       _privateMode,
                                       (value) async {
                                         // Call API to update status
@@ -719,7 +723,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                                     style: TextStyle(
                                       color: _privateMode
                                           ? Colors.green
-                                          : Colors.red,
+                                          : Color(0xFF07723D),
                                       fontSize: 12,
                                     ),
                                   ),
@@ -749,16 +753,15 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
               child: Column(
                 children: [
                   _buildProfileOption(
-                      Icons.person_outline, 'Personal Information', () {}),
-                  _buildProfileOption(Icons.business, 'Company Details', () {}),
-                  _buildProfileOption(Icons.payment, 'Payment Methods', () {}),
+                      Icons.person_outline, s.personalInformation, () {}),
+                  _buildProfileOption(Icons.business, s.companyDetails, () {}),
+                  _buildProfileOption(Icons.payment, s.paymentMethods, () {}),
                   _buildProfileOption(
-                      Icons.favorite, 'Favorite Destinations', () {}),
+                      Icons.favorite, s.favoriteDestinations, () {}),
                   _buildProfileOption(
-                      Icons.language, 'Language', _showLanguageDialog),
-                  _buildProfileOption(
-                      Icons.help_outline, 'Help & Support', () {}),
-                  _buildProfileOption(Icons.logout, 'Logout', _handleLogout,
+                      Icons.language, s.language, _showLanguageDialog),
+                  _buildProfileOption(Icons.help_outline, s.helpSupport, () {}),
+                  _buildProfileOption(Icons.logout, s.logout, _handleLogout,
                       isLast: true, isLogout: true),
                 ],
               ),
@@ -818,7 +821,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
           children: [
             Icon(
               icon,
-              color: isLogout ? Colors.red : Colors.black87,
+              color: isLogout ? Color(0xFF07723D) : Colors.black87,
               size: 24,
             ),
             const SizedBox(width: 16),
@@ -828,13 +831,13 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: isLogout ? Colors.red : Colors.black87,
+                  color: isLogout ? Color(0xFF07723D) : Colors.black87,
                 ),
               ),
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color: isLogout ? Colors.red : Colors.grey,
+              color: isLogout ? Color(0xFF07723D) : Colors.grey,
               size: 16,
             ),
           ],

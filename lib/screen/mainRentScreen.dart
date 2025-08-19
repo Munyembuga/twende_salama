@@ -33,7 +33,7 @@ class _MainRentScreenState extends State<MainRentScreen>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(s.carRentals),
-        backgroundColor: const Color(0xFFF5141E),
+        backgroundColor: const Color(0xFF07723D),
         foregroundColor: Colors.white,
         bottom: TabBar(
           controller: _tabController,
