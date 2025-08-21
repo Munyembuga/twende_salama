@@ -370,7 +370,7 @@ class _ConfirmedRidesTabState extends State<ConfirmedRidesTab> {
       'distance': '${booking['distance']?.toString() ?? 'N/A'} km',
       'estimated_duration':
           '${booking['estimated_duration']?.toString() ?? 'N/A'} min',
-      'fare': '${booking['estimated_price']?.toString() ?? 'N/A'} RWF',
+      'fare': '${booking['estimated_price']?.toString() ?? 'N/A'} USD',
       'client_name':
           '${booking['f_name']?.toString() ?? ''} ${booking['l_name']?.toString() ?? ''}'
                   .trim()

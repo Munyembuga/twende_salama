@@ -419,7 +419,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       ),
                                       child: Text(
-                                        '${s.wallet}: $wallet RWF',
+                                        '${s.wallet}: $wallet USD',
                                         style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,

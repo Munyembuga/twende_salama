@@ -100,7 +100,7 @@ class SEn extends S {
 
   @override
   String estimatedFare(Object fare) {
-    return 'Estimated Fare: $fare RWF';
+    return 'Estimated Fare: $fare USD';
   }
 
   @override
@@ -108,7 +108,7 @@ class SEn extends S {
 
   @override
   String confirmBookingWithFare(Object fare) {
-    return 'Confirm Booking - $fare RWF';
+    return 'Confirm Booking - $fare USD';
   }
 
   @override
@@ -137,7 +137,7 @@ class SEn extends S {
 
   @override
   String bookingConfirmed(Object category, Object fare) {
-    return 'Booking confirmed! $category - $fare RWF';
+    return 'Booking confirmed! $category - $fare USD';
   }
 
   @override
@@ -204,12 +204,12 @@ class SEn extends S {
 
   @override
   String ratePerDuration(Object price, Object unit) {
-    return 'Rate: $price RWF per $unit';
+    return 'Rate: $price USD per $unit';
   }
 
   @override
   String totalPrice(Object price) {
-    return 'Total: $price RWF';
+    return 'Total: $price USD';
   }
 
   @override
@@ -220,7 +220,7 @@ class SEn extends S {
 
   @override
   String confirmRentalWithPrice(Object price) {
-    return 'Confirm Rental - $price RWF';
+    return 'Confirm Rental: $price USD';
   }
 
   @override

@@ -33,6 +33,10 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
   String status = '';
   bool isLoading = true;
 
+  // Monthly rides statistics variables
+  Map<String, dynamic> monthlyStats = {};
+  bool isLoadingStats = true;
+
   @override
   void initState() {
     super.initState();
@@ -97,6 +101,11 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
         });
       }
 
+      // Load monthly rides statistics
+      if (_driverId > 0) {
+        await _loadMonthlyStats();
+      }
+
       setState(() {
         isLoading = false;
       });
@@ -104,6 +113,38 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
       print("Error loading user data: $e");
       setState(() {
         isLoading = false;
+        isLoadingStats = false;
+      });
+    }
+  }
+
+  Future<void> _loadMonthlyStats() async {
+    try {
+      setState(() {
+        isLoadingStats = true;
+      });
+
+      final result = await DriverService.getDriverMonthlyRides(
+        driverId: _driverId,
+        context: context,
+      );
+
+      if (result['success']) {
+        setState(() {
+          monthlyStats = result;
+          isLoadingStats = false;
+        });
+        print("Monthly stats loaded: ${result['data']}");
+      } else {
+        print("Failed to load monthly stats: ${result['message']}");
+        setState(() {
+          isLoadingStats = false;
+        });
+      }
+    } catch (e) {
+      print("Error loading monthly stats: $e");
+      setState(() {
+        isLoadingStats = false;
       });
     }
   }
@@ -409,6 +450,12 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
       );
     }
 
+    // Get real stats from API or use defaults
+    final totalRides = monthlyStats['rides_count']?.toString() ?? '0';
+    final thisMonth = monthlyStats['completed_rides']?.toString() ?? '0';
+    final avgEarnings =
+        monthlyStats['statistics']?['average_ride_amount']?.toString() ?? '0';
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(200.0),
@@ -512,7 +559,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                                         ),
                                       ),
                                       child: Text(
-                                        '${s.wallet}: $wallet RWF',
+                                        '${s.wallet}: $wallet USD',
                                         style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,
@@ -587,13 +634,29 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
               ),
               child: Column(
                 children: [
+                  // Display month name if available
+                  if (monthlyStats['month_name'] != null && !isLoadingStats)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text(
+                        monthlyStats['month_name'],
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFFA77D55),
+                        ),
+                      ),
+                    ),
                   // Quick stats or additional info
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildQuickStat(s.totalRides, '47', Icons.directions_car),
-                      _buildQuickStat(s.thisMonth, '12', Icons.calendar_month),
-                      _buildQuickStat(s.rating, '4.8', Icons.star),
+                      _buildQuickStat(
+                          s.totalRides, totalRides, Icons.directions_car),
+                      _buildQuickStat(
+                          s.thisMonth, thisMonth, Icons.calendar_month),
+                      _buildQuickStat(
+                          'Avg USD', avgEarnings, Icons.monetization_on),
                     ],
                   ),
                 ],
@@ -671,17 +734,7 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 20),
                               ),
-                              _buildToggleOption(
-                                Icons.phone,
-                                s.enableDriverCalls,
-                                s.allowPassengersToCall,
-                                _enableDriverCalls,
-                                (value) {
-                                  setState(() {
-                                    _enableDriverCalls = value;
-                                  });
-                                },
-                              ),
+
                               _buildToggleOption(
                                 Icons.location_on,
                                 s.shareLiveLocation,
@@ -752,15 +805,15 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
               ),
               child: Column(
                 children: [
-                  _buildProfileOption(
-                      Icons.person_outline, s.personalInformation, () {}),
-                  _buildProfileOption(Icons.business, s.companyDetails, () {}),
-                  _buildProfileOption(Icons.payment, s.paymentMethods, () {}),
-                  _buildProfileOption(
-                      Icons.favorite, s.favoriteDestinations, () {}),
+                  // _buildProfileOption(
+                  //     Icons.person_outline, s.personalInformation, () {}),
+                  // _buildProfileOption(Icons.business, s.companyDetails, () {}),
+                  // _buildProfileOption(Icons.payment, s.paymentMethods, () {}),
+                  // _buildProfileOption(
+                  //     Icons.favorite, s.favoriteDestinations, () {}),
                   _buildProfileOption(
                       Icons.language, s.language, _showLanguageDialog),
-                  _buildProfileOption(Icons.help_outline, s.helpSupport, () {}),
+                  // _buildProfileOption(Icons.help_outline, s.helpSupport, () {}),
                   _buildProfileOption(Icons.logout, s.logout, _handleLogout,
                       isLast: true, isLogout: true),
                 ],
@@ -781,14 +834,23 @@ class _ProfileDriverScreenState extends State<ProfileDriverScreen> {
           size: 24,
         ),
         const SizedBox(height: 4),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFA77D55),
-          ),
-        ),
+        isLoadingStats
+            ? const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Color(0xFFA77D55),
+                ),
+              )
+            : Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFA77D55),
+                ),
+              ),
         Text(
           label,
           style: const TextStyle(

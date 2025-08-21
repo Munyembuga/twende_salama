@@ -926,7 +926,7 @@ class _OnTripRideCardState extends State<OnTripRideCard> {
                     ],
                   ),
                   Text(
-                    '${widget.trip['payment_fee']?.toString() ?? widget.trip['estimated_price']?.toString() ?? 'N/A'} RWF',
+                    '${widget.trip['payment_fee']?.toString() ?? widget.trip['estimated_price']?.toString() ?? 'N/A'} USD',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

@@ -110,7 +110,7 @@ class CompletedRideCard extends StatelessWidget {
                             size: 14, color: Colors.green),
                         const SizedBox(width: 4),
                         Text(
-                          '${trip['payment_fee']?.toString() ?? '0'} RWF',
+                          '${trip['payment_fee']?.toString() ?? '0'} USD',
                           style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -323,7 +323,7 @@ class CompletedRideCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          '${trip['earnings']?['total_amount']?.toString() ?? trip['payment_fee']?.toString() ?? '0'} RWF',
+                          '${trip['earnings']?['total_amount']?.toString() ?? trip['payment_fee']?.toString() ?? '0'} USD',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

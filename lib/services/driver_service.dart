@@ -1013,4 +1013,98 @@ class DriverService {
       };
     }
   }
+
+  // Get driver monthly rides statistics
+  static Future<Map<String, dynamic>> getDriverMonthlyRides({
+    required int driverId,
+    BuildContext? context,
+  }) async {
+    try {
+      // Get the auth token
+      final token = await StorageService.getToken();
+      if (token == null) {
+        return {
+          'success': false,
+          'message': 'Authentication token not found',
+        };
+      }
+
+      // Set up headers with the bearer token
+      final options = Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      // Print request details
+      print('🔍 GET DRIVER MONTHLY RIDES:');
+      print(
+          'URL: ${ApiConstants.baseUrl}driver/driver_monthlyride?driver_id=$driverId');
+
+      // Make the API call
+      final response = await _dio.get(
+        '${ApiConstants.baseUrl}driver/driver_monthlyride?driver_id=$driverId',
+        options: options,
+      );
+
+      // Print response details
+      print('📊 MONTHLY RIDES RESPONSE:');
+      print('Status Code: ${response.statusCode}');
+      print('Data: ${response.data}');
+
+      if (response.data['success'] == true) {
+        return {
+          'success': true,
+          'data': response.data,
+          'month': response.data['month'],
+          'month_name': response.data['month_name'],
+          'rides_count': response.data['rides_count'] ?? 0,
+          'completed_rides': response.data['completed_rides'] ?? 0,
+          'confirmed_rides': response.data['confirmed_rides'] ?? 0,
+          'on_trip_rides': response.data['on_trip_rides'] ?? 0,
+          'statistics': response.data['statistics'] ?? {},
+          'is_current_month': response.data['is_current_month'] ?? false,
+        };
+      } else {
+        return {
+          'success': false,
+          'message': response.data['message'] ?? 'Failed to get monthly rides',
+        };
+      }
+    } on DioException catch (e) {
+      // Print error details
+      print('❌ MONTHLY RIDES ERROR:');
+      print('Error type: ${e.type}');
+      if (e.response != null) {
+        print('Status code: ${e.response?.statusCode}');
+        print('Error response: ${e.response?.data}');
+      } else {
+        print('Error message: ${e.message}');
+      }
+
+      String errorMessage = 'Failed to get monthly rides';
+
+      if (e.response != null) {
+        errorMessage = e.response?.data['message'] ?? errorMessage;
+        await _handleTokenExpiration(errorMessage, context);
+      } else if (e.type == DioExceptionType.connectionTimeout) {
+        errorMessage = 'Connection timeout';
+      } else if (e.type == DioExceptionType.receiveTimeout) {
+        errorMessage = 'Server response timeout';
+      } else {
+        errorMessage = 'Network error';
+      }
+
+      return {
+        'success': false,
+        'message': errorMessage,
+      };
+    } catch (e) {
+      print('💥 UNEXPECTED ERROR: $e');
+      return {
+        'success': false,
+        'message': 'An unexpected error occurred',
+      };
+    }
+  }
 }

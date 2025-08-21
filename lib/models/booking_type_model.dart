@@ -84,10 +84,10 @@ class CategoryWithBookingType {
         final base_km = pricingMap['base_km'] ?? '0';
         final perKmRate = pricingMap['per_km_rate'] ?? '0';
 
-        final baseFareInt = (double.tryParse(base_fee) ?? 0).toInt();
-        final perKmRateInt = (double.tryParse(perKmRate) ?? 0).toInt();
+        final baseFareInt = (double.tryParse(base_fee) ?? 0);
+        final perKmRateInt = (double.tryParse(perKmRate) ?? 0);
 
-        return '$baseFareInt RWF(${base_km} Km) + $perKmRateInt RWF/km';
+        return '$baseFareInt USD(${base_km} Km) + $perKmRateInt USD/km';
       } else if (pricingMap['type'] == 'rental') {
         // Booking type 2: Car rental without driver
         final details = pricingMap['details'];
@@ -100,14 +100,14 @@ class CategoryWithBookingType {
             if (dayPrices.isNotEmpty) {
               final dayPrice = dayPrices.first;
               final priceValue = dayPrice['car_rent_price'].toString();
-              final price = (double.tryParse(priceValue) ?? 0).toInt();
-              return '$price RWF/day';
+              final price = (double.tryParse(priceValue) ?? 0);
+              return '$price USD/day';
             } else {
               // No day price, show first available price
               final firstPrice = details.first;
               final priceValue = firstPrice['car_rent_price'].toString();
-              final price = (double.tryParse(priceValue) ?? 0).toInt();
-              return '$price RWF/${firstPrice['price_type_name']}';
+              final price = (double.tryParse(priceValue) ?? 0);
+              return '$price USD/${firstPrice['price_type_name']}';
             }
           } catch (e) {
             print('Error parsing rental pricing: $e');
@@ -126,14 +126,14 @@ class CategoryWithBookingType {
             if (dayPrices.isNotEmpty) {
               final dayPrice = dayPrices.first;
               final priceValue = dayPrice['total_price'].toString();
-              final price = (double.tryParse(priceValue) ?? 0).toInt();
-              return '$price RWF/day (with driver)';
+              final price = (double.tryParse(priceValue) ?? 0);
+              return '$price USD/day (with driver)';
             } else {
               // No day price, show first available price
               final firstPrice = details.first;
               final priceValue = firstPrice['total_price'].toString();
-              final price = (double.tryParse(priceValue) ?? 0).toInt();
-              return '$price RWF/${firstPrice['price_type_name']} (with driver)';
+              final price = (double.tryParse(priceValue) ?? 0);
+              return '$price USD/${firstPrice['price_type_name']} (with driver)';
             }
           } catch (e) {
             print('Error parsing rental with driver pricing: $e');
@@ -153,15 +153,14 @@ class CategoryWithBookingType {
       final pricingMap = pricing as Map<String, dynamic>;
 
       if (pricingMap['type'] == 'ride') {
-        final baseFare =
-            (double.tryParse(pricingMap['base_fare'] ?? '0') ?? 0).toInt();
+        final baseFare = (double.tryParse(pricingMap['base_fare'] ?? '0') ?? 0);
         final perKmRate =
-            (double.tryParse(pricingMap['per_km_rate'] ?? '0') ?? 0).toInt();
-        final perMinuteRate =
-            (double.tryParse(pricingMap['per_minute_rate'] ?? '0') ?? 0)
-                .toInt();
+            (double.tryParse(pricingMap['per_km_rate'] ?? '0') ?? 0);
 
-        return 'Base: $baseFare RWF\nPer km: $perKmRate RWF\nPer minute: $perMinuteRate RWF';
+        final perMinuteRate =
+            (double.tryParse(pricingMap['per_minute_rate'] ?? '0') ?? 0);
+
+        return 'Base: $baseFare USD\nPer km: $perKmRate USD\nPer minute: $perMinuteRate USD';
       } else if (pricingMap['type'] == 'rental' ||
           pricingMap['type'] == 'rental_with_driver') {
         final details = pricingMap['details'];
@@ -175,18 +174,16 @@ class CategoryWithBookingType {
             if (pricingMap['type'] == 'rental_with_driver') {
               priceValue =
                   (double.tryParse(detail['total_price'].toString()) ?? 0)
-                      .toInt()
                       .toString();
             } else {
               priceValue =
                   (double.tryParse(detail['car_rent_price'].toString()) ?? 0)
-                      .toInt()
                       .toString();
             }
 
             if (pricing.isNotEmpty) pricing.write('\n');
             pricing.write(
-                '${priceTypeName.toString().toUpperCase()}: $priceValue RWF');
+                '${priceTypeName.toString().toUpperCase()}: $priceValue USD');
           }
 
           return pricing.toString();

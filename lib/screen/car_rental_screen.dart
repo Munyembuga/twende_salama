@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:twende/l10n/l10n.dart';
+import 'package:twende/screen/bottomTab.dart';
 import 'package:twende/screen/login.dart';
 import 'package:twende/services/device_info_service.dart';
 import 'package:twende/services/storage_service.dart';
@@ -382,7 +383,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
 
     print('Total days: $totalDays');
     print('Base price: $basePrice');
-    print('Discount: $discountPercentage% - $discountDescription');
+    print('Discount: $discountPercentage%h - $discountDescription');
     print('Final price: $_finalPrice');
   }
 
@@ -694,13 +695,22 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
       });
 
       if (response['success']) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => BottomNavigation(
+              initialIndex: 2, // Navigate to third tab (MainRentScreen)
+              isGuestMode: _isGuestMode,
+            ),
+          ),
+          (route) => false, // Remove all previous routes
+        );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(response['message']),
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
+        // Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -957,7 +967,7 @@ class _CarRentalScreenState extends State<CarRentalScreen> {
                                         color: Color(0xFF07723D), size: 20),
                                     const SizedBox(width: 8),
                                     Text(
-                                      'Rate: ${_pricesByType[_selectedDurationType]?.toInt()} RWF per $_selectedDurationType',
+                                      'Rate: ${_pricesByType[_selectedDurationType]?.toInt()} USD per $_selectedDurationType',
                                       style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,

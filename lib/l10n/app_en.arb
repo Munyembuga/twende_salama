@@ -35,14 +35,14 @@
   "duration": "Duration",
   "startDate": "Start",
   "endDate": "End",
-  "estimatedFare": "Estimated Fare: {fare} RWF",
+  "estimatedFare": "Estimated Fare: {fare} USD",
   "@estimatedFare": {
     "placeholders": {
       "fare": {}
     }
   },
   "confirmBooking": "Confirm Booking",
-  "confirmBookingWithFare": "Confirm Booking - {fare} RWF",
+  "confirmBookingWithFare": "Confirm Booking - {fare} USD",
   "@confirmBookingWithFare": {
     "placeholders": {
       "fare": {}
@@ -56,7 +56,7 @@
   "phoneHint": "0788123456",
   "privacyInfo": "Your information will only be used for this booking.",
   "fillAllFields": "Please fill in all fields",
-  "bookingConfirmed": "Booking confirmed! {category} - {fare} RWF",
+  "bookingConfirmed": "Booking confirmed! {category} - {fare} USD",
   "@bookingConfirmed": {
     "placeholders": {
       "category": {},
@@ -102,14 +102,14 @@
       "unit": {}
     }
   },
-  "ratePerDuration": "Rate: {price} RWF per {unit}",
+  "ratePerDuration": "Rate: {price} USD per {unit}",
   "@ratePerDuration": {
     "placeholders": {
       "price": {},
       "unit": {}
     }
   },
-  "totalPrice": "Total: {price} RWF",
+  "totalPrice": "Total: {price} USD",
   "@totalPrice": {
     "placeholders": {
       "price": {}
@@ -117,7 +117,7 @@
   },
   "priceIncludesDriver": "Price includes driver",
   "confirmRental": "Confirm Rental",
-  "confirmRentalWithPrice": "Confirm Rental - {price} RWF",
+  "confirmRentalWithPrice": "Confirm Rental: {price} USD",
   "@confirmRentalWithPrice": {
     "placeholders": {
       "price": {}

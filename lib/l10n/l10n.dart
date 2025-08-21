@@ -278,7 +278,7 @@ abstract class S {
   /// No description provided for @estimatedFare.
   ///
   /// In en, this message translates to:
-  /// **'Estimated Fare: {fare} RWF'**
+  /// **'Estimated Fare: {fare} USD'**
   String estimatedFare(Object fare);
 
   /// No description provided for @confirmBooking.
@@ -290,7 +290,7 @@ abstract class S {
   /// No description provided for @confirmBookingWithFare.
   ///
   /// In en, this message translates to:
-  /// **'Confirm Booking - {fare} RWF'**
+  /// **'Confirm Booking - {fare} USD'**
   String confirmBookingWithFare(Object fare);
 
   /// No description provided for @completeYourBooking.
@@ -344,7 +344,7 @@ abstract class S {
   /// No description provided for @bookingConfirmed.
   ///
   /// In en, this message translates to:
-  /// **'Booking confirmed! {category} - {fare} RWF'**
+  /// **'Booking confirmed! {category} - {fare} USD'**
   String bookingConfirmed(Object category, Object fare);
 
   /// No description provided for @bookingRequestSent.
@@ -458,13 +458,13 @@ abstract class S {
   /// No description provided for @ratePerDuration.
   ///
   /// In en, this message translates to:
-  /// **'Rate: {price} RWF per {unit}'**
+  /// **'Rate: {price} USD per {unit}'**
   String ratePerDuration(Object price, Object unit);
 
   /// No description provided for @totalPrice.
   ///
   /// In en, this message translates to:
-  /// **'Total: {price} RWF'**
+  /// **'Total: {price} USD'**
   String totalPrice(Object price);
 
   /// No description provided for @priceIncludesDriver.
@@ -482,7 +482,7 @@ abstract class S {
   /// No description provided for @confirmRentalWithPrice.
   ///
   /// In en, this message translates to:
-  /// **'Confirm Rental - {price} RWF'**
+  /// **'Confirm Rental: {price} USD'**
   String confirmRentalWithPrice(Object price);
 
   /// No description provided for @completeYourRental.

@@ -358,7 +358,7 @@ class BookingDetailScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${_formatPrice(booking.estimatedPrice)} RWF',
+                        '${_formatPrice(booking.estimatedPrice)} USD',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF07723D),

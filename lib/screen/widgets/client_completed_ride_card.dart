@@ -110,7 +110,7 @@ class ClientCompletedRideCard extends StatelessWidget {
                             size: 14, color: Colors.green),
                         const SizedBox(width: 4),
                         Text(
-                          '${trip['trip_summary']?['final_amount']?.toString() ?? trip['estimated_price']?.toString() ?? '0'} RWF',
+                          '${trip['trip_summary']?['final_amount']?.toString() ?? trip['estimated_price']?.toString() ?? '0'} USD',
                           style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,

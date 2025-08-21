@@ -42,7 +42,7 @@ class RideData {
       'to': booking['dropoff_location'],
       'date': date,
       'time': time,
-      'fare': 'RWF ${booking['estimated_price']}',
+      'fare': '${booking['estimated_price']} USD',
       'driver': driverName,
       'vehicle': vehicleInfo,
       'phone': phone,
@@ -90,7 +90,7 @@ class RideData {
       'to': booking['dropoff_location'],
       'date': date,
       'time': time,
-      'fare': 'RWF ${booking['estimated_price']}',
+      'fare': '${booking['estimated_price']} USD',
       'driver': driverName,
       'vehicle': vehicleInfo,
       'phone': phone,
@@ -120,7 +120,7 @@ class RideData {
       'distance': '${apiData['distance']?.toString() ?? 'N/A'} km',
       'estimated_duration':
           '${apiData['estimated_duration']?.toString() ?? 'N/A'} min',
-      'fare': '${apiData['estimated_price']?.toString() ?? 'N/A'} RWF',
+      'fare': '${apiData['estimated_price']?.toString() ?? 'N/A'} USD',
       'client_name':
           '${apiData['f_name']?.toString() ?? ''} ${apiData['l_name']?.toString() ?? ''}'
                   .trim()
@@ -171,7 +171,7 @@ class RideData {
       'date': date,
       'time': time,
       'completed_time': completedTime,
-      'fare': 'RWF ${trip['payment_fee']?.toString() ?? '0'}',
+      'fare': '${trip['payment_fee']?.toString() ?? '0'} USD',
       'distance': '${trip['km_used']?.toString() ?? '0'} km',
       'duration': trip['actual_trip_duration']?.toString() ?? 'N/A',
       'duration_minutes':

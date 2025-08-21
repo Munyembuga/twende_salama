@@ -241,7 +241,7 @@ class _CompleteTripBottomSheetState extends State<CompleteTripBottomSheet> {
                       labelText: 'Payment Fee',
                       hintText: 'Enter payment amount',
                       border: OutlineInputBorder(),
-                      suffixText: 'RWF',
+                      suffixText: 'USD',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {

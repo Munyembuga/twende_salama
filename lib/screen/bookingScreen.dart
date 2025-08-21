@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:twende/screen/bottomTab.dart';
 import 'package:twende/screen/login.dart';
 import 'package:twende/services/device_info_service.dart';
 import 'package:twende/services/storage_service.dart';
@@ -235,14 +236,14 @@ class _BookingScreenState extends State<BookingScreen> {
                   print('=== RIDE FARE CALCULATION ===');
                   print('Distance: $distanceInKm km');
                   print('Base KM: $baseKm km');
-                  print('Base fare: $baseFare RWF');
-                  print('Per KM rate: $perKmRate RWF');
+                  print('Base fare: $baseFare USD');
+                  print('Per KM rate: $perKmRate USD');
 
                   if (distanceInKm <= baseKm) {
                     // Distance is within base km limit, charge only base fare
                     _estimatedFare = baseFare;
                     print('Distance <= Base KM: Using base fare only');
-                    print('Final fare: $baseFare RWF');
+                    print('Final fare: $baseFare USD');
                   } else {
                     // Distance exceeds base km, calculate additional km charges
 
@@ -250,7 +251,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     print("estimate Price: $_estimatedFare");
                     print('Distance > Base KM: Using base fare + per km rate');
                     print(
-                        'Final fare: ${_estimatedFare.toStringAsFixed(0)} RWF');
+                        'Final fare: ${_estimatedFare.toStringAsFixed(0)} USD');
                   }
                   print('=============================');
                 }
@@ -266,7 +267,7 @@ class _BookingScreenState extends State<BookingScreen> {
             print('Distance: $_distance ( km)');
             print('Pricing Type: ${_selectedCategory!.pricing['type']}');
             print('Category: ${_selectedCategory!.catgName}');
-            print('Estimated Fare: ${_estimatedFare.toStringAsFixed(0)} RWF');
+            print('Estimated Fare: ${_estimatedFare.toStringAsFixed(0)} USD');
             print('================================');
           } else {
             setState(() {
@@ -508,7 +509,16 @@ class _BookingScreenState extends State<BookingScreen> {
       });
       print("response: $result");
       if (result['success']) {
-        Navigator.pop(context);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => BottomNavigation(
+              initialIndex: 1, // Navigate to second tab (TrackingScreen)
+              isGuestMode: _isGuestMode,
+            ),
+          ),
+          (route) => false, // Remove all previous routes
+        );
+        // Navigator.pop(context);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -915,23 +925,23 @@ class _BookingScreenState extends State<BookingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Header
-                  Text(
-                    l10n.whereTo,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    l10n.letsGetYouToDestination,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
+                  // Text(
+                  //   l10n.whereTo,
+                  //   style: const TextStyle(
+                  //     fontSize: 28,
+                  //     fontWeight: FontWeight.bold,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 8),
+                  // Text(
+                  //   l10n.letsGetYouToDestination,
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     color: Colors.grey.shade600,
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 30),
 
                   // Category Selection Dropdown
                   if (_categories.isNotEmpty) _buildCategoryDropdown(),
