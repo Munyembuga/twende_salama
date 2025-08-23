@@ -8,6 +8,8 @@ import 'package:twende/screen/login.dart';
 import 'package:twende/l10n/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:twende/main.dart';
+import 'package:twende/services/stats_service.dart';
+import 'package:twende/models/overall_stats_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -30,10 +32,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String status = '';
   bool isLoading = true;
 
+  // Add statistics variables
+  OverallStatsModel? _overallStats;
+  bool _isLoadingStats = true;
+  bool _hasStatsError = false;
+  String _statsErrorMessage = '';
+
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    _fetchOverallStats(); // Add this line
   }
 
   Future<void> _loadUserData() async {
@@ -72,6 +81,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } catch (e) {
       setState(() {
         isLoading = false;
+      });
+    }
+  }
+
+  // Add method to fetch overall statistics
+  Future<void> _fetchOverallStats() async {
+    setState(() {
+      _isLoadingStats = true;
+      _hasStatsError = false;
+    });
+
+    final result = await StatsService.getOverallStats();
+
+    if (result['success']) {
+      setState(() {
+        _overallStats = result['data'];
+        _isLoadingStats = false;
+      });
+    } else {
+      setState(() {
+        _hasStatsError = true;
+        _statsErrorMessage = result['message'];
+        _isLoadingStats = false;
       });
     }
   }
@@ -404,30 +436,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               const SizedBox(height: 4),
-                              wallet.isNotEmpty
-                                  ? Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.2),
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: Colors.white.withOpacity(0.5),
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        '${s.wallet}: $wallet USD',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox.shrink(),
+                              // wallet.isNotEmpty
+                              //     ? Container(
+                              //         padding: const EdgeInsets.symmetric(
+                              //           horizontal: 8,
+                              //           vertical: 2,
+                              //         ),
+                              //         decoration: BoxDecoration(
+                              //           color: Colors.white.withOpacity(0.2),
+                              //           borderRadius: BorderRadius.circular(12),
+                              //           border: Border.all(
+                              //             color: Colors.white.withOpacity(0.5),
+                              //             width: 1,
+                              //           ),
+                              //         ),
+                              //         child: Text(
+                              //           '${s.wallet}: $wallet USD',
+                              //           style: const TextStyle(
+                              //             fontSize: 12,
+                              //             color: Colors.white,
+                              //             fontWeight: FontWeight.w500,
+                              //           ),
+                              //         ),
+                              //       )
+                              //     : const SizedBox.shrink(),
                             ],
                           ),
                         ),
@@ -481,7 +513,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Profile Header - Simplified since data is now in app bar
+            // Profile Header with real statistics
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -497,15 +529,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               child: Column(
                 children: [
-                  // Quick stats or additional info
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildQuickStat(s.totalRides, '47', Icons.directions_car),
-                      _buildQuickStat(s.thisMonth, '12', Icons.calendar_month),
-                      _buildQuickStat(s.rating, '4.8', Icons.star),
-                    ],
-                  ),
+                  // Statistics section with loading states
+                  _isLoadingStats
+                      ? _buildStatsShimmer()
+                      : _hasStatsError
+                          ? _buildStatsError()
+                          : _buildRealStats(),
                 ],
               ),
             ),
@@ -526,15 +555,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               child: Column(
                 children: [
-                  _buildProfileOption(
-                      Icons.person_outline, s.personalInformation, () {}),
-                  _buildProfileOption(Icons.payment, s.paymentMethods, () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PaymentMethodsScreen()),
-                    );
-                  }),
+                  // _buildProfileOption(
+                  //     Icons.person_outline, s.personalInformation, () {}),
+                  // _buildProfileOption(Icons.payment, s.paymentMethods, () {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const PaymentMethodsScreen()),
+                  //   );
+                  // }),
                   _buildProfileOption(Icons.favorite, s.favoriteDestinations,
                       () {
                     Navigator.push(
@@ -561,6 +590,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  // Build real statistics from API
+  Widget _buildRealStats() {
+    final s = S.of(context)!;
+    final stats = _overallStats?.overallStats;
+
+    if (stats == null) {
+      return _buildDefaultStats();
+    }
+
+    // Use the formatted month display or month name
+    final monthDisplay = _overallStats!.monthName.isNotEmpty
+        ? _overallStats!.monthName
+        : _overallStats!.formattedCurrentMonth;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildQuickStat(
+            s.totalRides, stats.totalRides.toString(), Icons.directions_car),
+        _buildQuickStat(s.thisMonth, monthDisplay, Icons.calendar_month),
+        _buildQuickStat(s.rating, '${stats.completionRate}%', Icons.star),
+      ],
+    );
+  }
+
+  // Build default stats when no data available
+  Widget _buildDefaultStats() {
+    final s = S.of(context)!;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildQuickStat(s.totalRides, '0', Icons.directions_car),
+        _buildQuickStat(s.thisMonth, '0', Icons.calendar_month),
+        _buildQuickStat(s.rating, '0%', Icons.star),
+      ],
+    );
+  }
+
+  // Build shimmer loading for statistics
+  Widget _buildStatsShimmer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: List.generate(
+        3,
+        (index) => Column(
+          children: [
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Container(
+              width: 30,
+              height: 16,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            const SizedBox(height: 2),
+            Container(
+              width: 50,
+              height: 10,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Build error state for statistics
+  Widget _buildStatsError() {
+    final s = S.of(context)!;
+    return Column(
+      children: [
+        Icon(Icons.error_outline, color: Colors.red, size: 40),
+        const SizedBox(height: 8),
+        Text(
+          'Failed to load statistics',
+          style: TextStyle(color: Colors.red[700], fontSize: 12),
+        ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: _fetchOverallStats,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF07723D),
+            foregroundColor: Colors.white,
+            minimumSize: const Size(80, 30),
+          ),
+          child: Text('Retry', style: TextStyle(fontSize: 12)),
+        ),
+      ],
     );
   }
 

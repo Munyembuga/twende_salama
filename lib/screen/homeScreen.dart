@@ -16,6 +16,9 @@ import 'package:twende/l10n/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:twende/main.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:twende/services/carousel_service.dart';
+import 'package:twende/models/carousel_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 // Simple replacement classes for Google Maps types
 class LatLng {
@@ -69,8 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _hasBookingTypesError = false;
   String _bookingTypesErrorMessage = '';
 
-  // Add carousel items
-  List<Map<String, dynamic>> _carouselItems = [];
+  // Replace the old carousel items list with CarouselItem model
+  List<CarouselItem> _carouselItems = [];
+  bool _isLoadingCarousel = true;
+  bool _hasCarouselError = false;
+  String _carouselErrorMessage = '';
 
   static const CameraPosition _initialPosition = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -90,36 +96,33 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeLocation();
       _fetchBookingTypes();
-      _initCarouselItems();
+      _fetchCarouselItems(); // Replace _initCarouselItems with API call
     });
   }
 
-  void _initCarouselItems() {
-    final l10n = S.of(context)!;
+  // Remove the old _initCarouselItems method and replace with API fetch
+  Future<void> _fetchCarouselItems() async {
     setState(() {
-      _carouselItems = [
-        {
-          'image': 'assets/images/1.jpeg',
-          'title': l10n.fastReliable,
-          'subtitle': l10n.getToDestination,
-        },
-        {
-          'image': 'assets/images/1.jpeg',
-          'title': l10n.safeSecure,
-          'subtitle': l10n.safetyPriority,
-        },
-        {
-          'image': 'assets/images/1.jpeg',
-          'title': l10n.affordablePrices,
-          'subtitle': l10n.premiumService,
-        },
-        {
-          'image': 'assets/images/1.jpeg',
-          'title': l10n.affordablePrices,
-          'subtitle': l10n.premiumService,
-        },
-      ];
+      _isLoadingCarousel = true;
+      _hasCarouselError = false;
     });
+
+    final result = await CarouselService.getCarouselItems();
+
+    if (result['success']) {
+      setState(() {
+        _carouselItems = result['data'];
+        _isLoadingCarousel = false;
+      });
+    } else {
+      setState(() {
+        _hasCarouselError = true;
+        _carouselErrorMessage = result['message'];
+        _isLoadingCarousel = false;
+        // Fallback to empty list or show error
+        _carouselItems = [];
+      });
+    }
   }
 
   Future<void> _checkGuestMode() async {
@@ -380,122 +383,146 @@ class _HomeScreenState extends State<HomeScreen> {
           // Add spacing at top
           const SizedBox(height: 15),
 
-          // Carousel Slider
-          CarouselSlider(
-            options: CarouselOptions(
-              height: 220,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              viewportFraction: 0.9,
-              aspectRatio: 16 / 9,
-              initialPage: 0,
-              autoPlayInterval: const Duration(seconds: 5),
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _currentCarouselIndex = index;
-                });
-              },
-            ),
-            items: _carouselItems.map((item) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        // You can use image assets or network images
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.asset(
-                            item['image'],
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
+          // Carousel Slider with loading state
+          _isLoadingCarousel
+              ? _buildCarouselShimmer()
+              : _hasCarouselError
+                  ? _buildCarouselError()
+                  : _carouselItems.isEmpty
+                      ? _buildEmptyCarousel()
+                      : CarouselSlider(
+                          options: CarouselOptions(
+                            height: 220,
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                            viewportFraction: 0.9,
+                            aspectRatio: 16 / 9,
+                            initialPage: 0,
+                            autoPlayInterval: const Duration(seconds: 5),
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentCarouselIndex = index;
+                              });
+                            },
                           ),
-                        ),
-                        // Text overlay
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(15),
-                                bottomRight: Radius.circular(15),
-                              ),
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.transparent,
-                                  Colors.black.withOpacity(0.7),
-                                ],
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['title'],
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                          items: _carouselItems.map((item) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 5.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  item['subtitle'],
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: CachedNetworkImage(
+                                          imageUrl: item.imageUrl,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          placeholder: (context, url) =>
+                                              Container(
+                                            color: Colors.grey[300],
+                                            child: const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Container(
+                                            color: Colors.grey[300],
+                                            child: const Icon(Icons.error,
+                                                size: 50),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              bottomLeft: Radius.circular(15),
+                                              bottomRight: Radius.circular(15),
+                                            ),
+                                            gradient: LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              colors: [
+                                                Colors.transparent,
+                                                Colors.black.withOpacity(0.7),
+                                              ],
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                item.title,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                item.subtitle,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                );
+                              },
+                            );
+                          }).toList(),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }).toList(),
-          ),
 
-          // Carousel Indicators
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _carouselItems.asMap().entries.map((entry) {
-              return Container(
-                width: 8.0,
-                height: 8.0,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _currentCarouselIndex == entry.key
-                      ? const Color(0xFF07723D)
-                      : Colors.grey.withOpacity(0.3),
-                ),
-              );
-            }).toList(),
-          ),
+          // Carousel Indicators - only show if carousel items exist
+          if (!_isLoadingCarousel &&
+              !_hasCarouselError &&
+              _carouselItems.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: _carouselItems.asMap().entries.map((entry) {
+                return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentCarouselIndex == entry.key
+                        ? const Color(0xFF07723D)
+                        : Colors.grey.withOpacity(0.3),
+                  ),
+                );
+              }).toList(),
+            ),
 
           SizedBox(height: 40),
           // Booking Types Header
@@ -733,5 +760,70 @@ class _HomeScreenState extends State<HomeScreen> {
       default:
         return '🇺🇸';
     }
+  }
+
+  // Add carousel loading shimmer
+  Widget _buildCarouselShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        height: 220,
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+    );
+  }
+
+  // Add carousel error widget
+  Widget _buildCarouselError() {
+    return Container(
+      height: 220,
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.red.withOpacity(0.3)),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, color: Colors.red, size: 40),
+            const SizedBox(height: 8),
+            Text(
+              'Failed to load carousel',
+              style: TextStyle(color: Colors.red[700]),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: _fetchCarouselItems,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Add empty carousel widget
+  Widget _buildEmptyCarousel() {
+    return Container(
+      height: 220,
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: const Center(
+        child: Text(
+          'No carousel items available',
+          style: TextStyle(color: Colors.grey),
+        ),
+      ),
+    );
   }
 }

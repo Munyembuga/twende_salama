@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:twende/services/favorite_location_service.dart';
+import 'package:twende/models/favorite_location_model.dart';
+import 'package:shimmer/shimmer.dart';
 
 class FavoriteDestinationsScreen extends StatefulWidget {
   const FavoriteDestinationsScreen({Key? key}) : super(key: key);
@@ -10,52 +13,42 @@ class FavoriteDestinationsScreen extends StatefulWidget {
 
 class _FavoriteDestinationsScreenState
     extends State<FavoriteDestinationsScreen> {
-  // Sample favorite destinations data
-  List<Map<String, dynamic>> favoriteDestinations = [
-    {
-      'id': '1',
-      'name': 'Home',
-      'address': 'Kigali City Tower, KN 4 Ave, Kigali',
-      'icon': Icons.home,
-      'color': Colors.blue,
-      'isDefault': true,
-    },
-    {
-      'id': '2',
-      'name': 'Work',
-      'address': 'Rwanda Development Board, Kigali Heights',
-      'icon': Icons.work,
-      'color': Colors.orange,
-      'isDefault': true,
-    },
-    {
-      'id': '3',
-      'name': 'Gym',
-      'address': 'Fitness Club Kigali, Remera',
-      'icon': Icons.fitness_center,
-      'color': Colors.green,
-      'isDefault': false,
-    },
-    {
-      'id': '4',
-      'name': 'University',
-      'address': 'University of Rwanda, Gikondo Campus',
-      'icon': Icons.school,
-      'color': Colors.purple,
-      'isDefault': false,
-    },
-    {
-      'id': '5',
-      'name': 'Shopping Mall',
-      'address': 'Kigali City Market, Downtown',
-      'icon': Icons.shopping_bag,
-      'color': Colors.pink,
-      'isDefault': false,
-    },
-  ];
+  // Replace sample data with API data
+  FavoriteLocationModel? _favoriteLocations;
+  bool _isLoading = true;
+  bool _hasError = false;
+  String _errorMessage = '';
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFavoriteLocations();
+  }
+
+  Future<void> _fetchFavoriteLocations() async {
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+    });
+
+    final result = await FavoriteLocationService.getFavoriteLocations();
+
+    if (result['success']) {
+      setState(() {
+        _favoriteLocations = result['data'];
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _hasError = true;
+        _errorMessage = result['message'];
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -126,7 +119,7 @@ class _FavoriteDestinationsScreenState
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFDE091E)),
+                      borderSide: const BorderSide(color: Color(0xFF07723D)),
                     ),
                   ),
                 ),
@@ -145,7 +138,7 @@ class _FavoriteDestinationsScreenState
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFDE091E)),
+                      borderSide: const BorderSide(color: Color(0xFF07723D)),
                     ),
                   ),
                 ),
@@ -183,15 +176,19 @@ class _FavoriteDestinationsScreenState
                         onPressed: () {
                           if (_nameController.text.isNotEmpty &&
                               _addressController.text.isNotEmpty) {
-                            _addDestination(
-                              _nameController.text,
-                              _addressController.text,
-                            );
                             Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Note: This is a demo. New destinations will appear after actual rides.'),
+                                backgroundColor: Colors.orange,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFDE091E),
+                          backgroundColor: const Color(0xFF07723D),
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
@@ -215,27 +212,6 @@ class _FavoriteDestinationsScreenState
           ),
         );
       },
-    );
-  }
-
-  void _addDestination(String name, String address) {
-    setState(() {
-      favoriteDestinations.add({
-        'id': DateTime.now().millisecondsSinceEpoch.toString(),
-        'name': name,
-        'address': address,
-        'icon': Icons.place,
-        'color': Colors.red,
-        'isDefault': false,
-      });
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$name added to favorites'),
-        backgroundColor: Colors.green,
-        behavior: SnackBarBehavior.floating,
-      ),
     );
   }
 
@@ -300,7 +276,7 @@ class _FavoriteDestinationsScreenState
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFDE091E)),
+                      borderSide: const BorderSide(color: Color(0xFF07723D)),
                     ),
                   ),
                 ),
@@ -318,7 +294,7 @@ class _FavoriteDestinationsScreenState
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFDE091E)),
+                      borderSide: const BorderSide(color: Color(0xFF07723D)),
                     ),
                   ),
                 ),
@@ -365,7 +341,7 @@ class _FavoriteDestinationsScreenState
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFDE091E),
+                          backgroundColor: const Color(0xFF07723D),
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
@@ -394,10 +370,11 @@ class _FavoriteDestinationsScreenState
 
   void _updateDestination(String id, String name, String address) {
     setState(() {
-      final index = favoriteDestinations.indexWhere((dest) => dest['id'] == id);
+      final index =
+          _favoriteLocations!.allLocations.indexWhere((loc) => loc.id == id);
       if (index != -1) {
-        favoriteDestinations[index]['name'] = name;
-        favoriteDestinations[index]['address'] = address;
+        _favoriteLocations!.allLocations[index].location = name;
+        _favoriteLocations!.allLocations[index].address = address;
       }
     });
 
@@ -507,8 +484,8 @@ class _FavoriteDestinationsScreenState
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          favoriteDestinations.removeWhere(
-                              (dest) => dest['id'] == destination['id']);
+                          _favoriteLocations!.allLocations.removeWhere(
+                              (loc) => loc.id == destination['id']);
                         });
                         Navigator.of(context).pop();
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -558,24 +535,100 @@ class _FavoriteDestinationsScreenState
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xFFDE091E),
+        backgroundColor: const Color(0xFF07723D),
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _showAddDestinationDialog,
-            tooltip: 'Add Destination',
+            icon: const Icon(Icons.refresh),
+            onPressed: _fetchFavoriteLocations,
+            tooltip: 'Refresh',
           ),
         ],
       ),
-      body: favoriteDestinations.isEmpty
-          ? _buildEmptyState()
-          : _buildDestinationsList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddDestinationDialog,
-        backgroundColor: const Color(0xFFDE091E),
-        child: const Icon(Icons.add, color: Colors.white),
+      body: _isLoading
+          ? _buildLoadingState()
+          : _hasError
+              ? _buildErrorState()
+              : _favoriteLocations == null ||
+                      _favoriteLocations!.allLocations.isEmpty
+                  ? _buildEmptyState()
+                  : _buildDestinationsList(),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _showAddDestinationDialog,
+      //   backgroundColor: const Color(0xFF07723D),
+      //   child: const Icon(Icons.add, color: Colors.white),
+      // ),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 5,
+      itemBuilder: (context, index) => _buildShimmerCard(),
+    );
+  }
+
+  Widget _buildShimmerCard() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        child: Container(
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorState() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 80,
+              color: Colors.red[300],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Failed to Load Destinations',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _errorMessage,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[500],
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: _fetchFavoriteLocations,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Try Again'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF07723D),
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -611,7 +664,7 @@ class _FavoriteDestinationsScreenState
             ),
             const SizedBox(height: 12),
             Text(
-              'Add places you visit frequently to save time on future bookings',
+              'Your frequently visited locations will appear here after you make some bookings',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -621,11 +674,11 @@ class _FavoriteDestinationsScreenState
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
-              onPressed: _showAddDestinationDialog,
-              icon: const Icon(Icons.add),
-              label: const Text('Add Your First Destination'),
+              onPressed: _fetchFavoriteLocations,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Refresh'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFDE091E),
+                backgroundColor: const Color(0xFF07723D),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
@@ -643,63 +696,97 @@ class _FavoriteDestinationsScreenState
   }
 
   Widget _buildDestinationsList() {
-    return Column(
-      children: [
-        // Header info
-        Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFFDE091E).withOpacity(0.1),
-                const Color(0xFFDE091E).withOpacity(0.05),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: const Color(0xFFDE091E).withOpacity(0.2),
-            ),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                Icons.info_outline,
-                color: const Color(0xFFDE091E),
-                size: 20,
+    final locations = _favoriteLocations!.allLocations;
+
+    // Group locations by type
+    final pickupLocations =
+        locations.where((loc) => loc.type == 'pickup').toList();
+    final dropoffLocations =
+        locations.where((loc) => loc.type == 'dropoff').toList();
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // Header info
+          Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFF07723D).withOpacity(0.1),
+                  const Color(0xFF07723D).withOpacity(0.05),
+                ],
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'Tap on any destination to book a ride, or long press to edit/delete',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[700],
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: const Color(0xFF07723D).withOpacity(0.2),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: const Color(0xFF07723D),
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'These are your most frequently used locations. Tap to use as destination.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[700],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
 
-        // Destinations list
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: favoriteDestinations.length,
-            itemBuilder: (context, index) {
-              final destination = favoriteDestinations[index];
-              return _buildDestinationCard(destination, index);
-            },
-          ),
-        ),
-      ],
+          // Pickup Locations Section
+          if (pickupLocations.isNotEmpty) ...[
+            _buildSectionHeader(
+                'Pickup Locations', Icons.location_on, Colors.green),
+            ...pickupLocations.map((location) => _buildLocationCard(location)),
+            const SizedBox(height: 16),
+          ],
+
+          // Dropoff Locations Section
+          if (dropoffLocations.isNotEmpty) ...[
+            _buildSectionHeader('Drop-off Locations', Icons.flag, Colors.blue),
+            ...dropoffLocations.map((location) => _buildLocationCard(location)),
+          ],
+
+          const SizedBox(height: 80), // Space for FAB
+        ],
+      ),
     );
   }
 
-  Widget _buildDestinationCard(Map<String, dynamic> destination, int index) {
+  Widget _buildSectionHeader(String title, IconData icon, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 20),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationCard(LocationItem location) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -717,13 +804,12 @@ class _FavoriteDestinationsScreenState
           // Navigate to booking screen with this destination
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Booking ride to ${destination['name']}...'),
+              content: Text('Using "${location.location}" as destination...'),
               backgroundColor: Colors.green,
               behavior: SnackBarBehavior.floating,
             ),
           );
         },
-        onLongPress: () => _showDestinationOptions(destination),
         borderRadius: BorderRadius.circular(15),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -731,68 +817,71 @@ class _FavoriteDestinationsScreenState
             children: [
               // Icon
               Container(
-                width: 50,
-                height: 50,
+                width: 45,
+                height: 45,
                 decoration: BoxDecoration(
-                  color: destination['color'].withOpacity(0.1),
+                  color: location.color.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
-                  destination['icon'],
-                  color: destination['color'],
-                  size: 24,
+                  location.icon,
+                  color: location.color,
+                  size: 22,
                 ),
               ),
               const SizedBox(width: 16),
 
-              // Destination info
+              // Location info
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            destination['name'],
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        if (destination['isDefault'])
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Text(
-                              'Default',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
                     Text(
-                      destination['address'],
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                        height: 1.3,
+                      location.location,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.history,
+                          size: 14,
+                          color: Colors.grey[500],
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Used ${location.usageCount} time${location.usageCount != 1 ? 's' : ''}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: location.color.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            location.type.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: location.color,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -808,124 +897,6 @@ class _FavoriteDestinationsScreenState
           ),
         ),
       ),
-    );
-  }
-
-  void _showDestinationOptions(Map<String, dynamic> destination) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle bar
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-
-              // Destination info
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: destination['color'].withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        destination['icon'],
-                        color: destination['color'],
-                        size: 24,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            destination['name'],
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            destination['address'],
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Options
-              ListTile(
-                leading: const Icon(Icons.directions_car, color: Colors.green),
-                title: const Text('Book Ride'),
-                onTap: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content:
-                          Text('Booking ride to ${destination['name']}...'),
-                      backgroundColor: Colors.green,
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                },
-              ),
-
-              if (!destination['isDefault'])
-                ListTile(
-                  leading: const Icon(Icons.edit, color: Colors.blue),
-                  title: const Text('Edit'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _editDestination(destination);
-                  },
-                ),
-
-              if (!destination['isDefault'])
-                ListTile(
-                  leading: const Icon(Icons.delete, color: Colors.red),
-                  title: const Text('Delete'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _deleteDestination(destination);
-                  },
-                ),
-
-              const SizedBox(height: 16),
-            ],
-          ),
-        );
-      },
     );
   }
 }
