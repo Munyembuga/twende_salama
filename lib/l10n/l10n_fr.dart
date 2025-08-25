@@ -100,7 +100,7 @@ class SFr extends S {
 
   @override
   String estimatedFare(Object fare) {
-    return 'Tarif estimé: $fare RWF';
+    return 'Tarif estimé: $fare USD';
   }
 
   @override
@@ -108,7 +108,7 @@ class SFr extends S {
 
   @override
   String confirmBookingWithFare(Object fare) {
-    return 'Confirmer la réservation - $fare RWF';
+    return 'Confirmer la réservation - $fare USD';
   }
 
   @override
@@ -137,7 +137,7 @@ class SFr extends S {
 
   @override
   String bookingConfirmed(Object category, Object fare) {
-    return 'Réservation confirmée! $category - $fare RWF';
+    return 'Réservation confirmée! $category - $fare USD';
   }
 
   @override
@@ -204,12 +204,12 @@ class SFr extends S {
 
   @override
   String ratePerDuration(Object price, Object unit) {
-    return 'Taux: $price RWF par $unit';
+    return 'Taux: $price USD par $unit';
   }
 
   @override
   String totalPrice(Object price) {
-    return 'Total: $price RWF';
+    return 'Total: $price USD';
   }
 
   @override
@@ -220,7 +220,7 @@ class SFr extends S {
 
   @override
   String confirmRentalWithPrice(Object price) {
-    return 'Confirmer la location - $price RWF';
+    return 'Confirmer la location - $price RWUSDF';
   }
 
   @override

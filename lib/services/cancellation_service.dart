@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:twende/models/overall_stats_model.dart';
+import 'package:twende/models/cancellation_model.dart';
 import 'package:twende/services/storage_service.dart';
 import 'package:twende/services/device_info_service.dart';
 
-class StatsService {
+class CancellationService {
   static const String baseUrl = 'http://move.itecsoft.site/api';
 
-  static Future<Map<String, dynamic>> getOverallStats() async {
+  static Future<Map<String, dynamic>> getCancellationHistory({
+    int page = 1,
+    int limit = 10,
+  }) async {
     try {
       // First check if we're in guest mode
       final isGuestMode = await StorageService.isGuestMode();
@@ -25,26 +28,29 @@ class StatsService {
           };
         }
         print(
-            'Fetching overall ride statistics for guest user with device ID: $deviceId');
-        url = '$baseUrl/clientDash/overallRide?device_id=$deviceId';
+            'Fetching cancellation history for guest user with device ID: $deviceId');
+        url =
+            '$baseUrl/booking/client_get_cancellation?device_id=$deviceId&page=$page&limit=$limit';
       } else {
-        // Regular user: check which ID to use (user or client)
+        // Regular user: check which ID to use
         final userData = await StorageService.getUserData();
         final clientData = await StorageService.getClientData();
 
         if (userData != null && userData['id'] != null) {
-          print(
-              'Fetching overall ride statistics for user ID: ${userData['id']}');
-          url = '$baseUrl/clientDash/overallRide?client_id=${userData['id']}';
+          print('Fetching cancellation history for user ID: ${userData['id']}');
+          url =
+              '$baseUrl/booking/client_get_cancellation?client_id=${userData['id']}&page=$page&limit=$limit';
         } else if (clientData != null && clientData['id'] != null) {
           print(
-              'Fetching overall ride statistics for client ID: ${clientData['id']}');
-          url = '$baseUrl/clientDash/overallRide?client_id=${clientData['id']}';
+              'Fetching cancellation history for client ID: ${clientData['id']}');
+          url =
+              '$baseUrl/booking/client_get_cancellation?client_id=${clientData['id']}&page=$page&limit=$limit';
         } else {
           // Fallback to device ID if no user/client ID found
           final deviceId = await DeviceInfoService.getDeviceId();
           print('No user/client ID found, using device ID: $deviceId');
-          url = '$baseUrl/clientDash/overallRide?device_id=$deviceId';
+          url =
+              '$baseUrl/booking/client_get_cancellation?device_id=$deviceId&page=$page&limit=$limit';
         }
       }
 
@@ -61,19 +67,20 @@ class StatsService {
         print('Response: ${response.body}');
 
         if (data['success'] == true) {
-          final overallStats = OverallStatsModel.fromJson(data);
+          final cancellationHistory =
+              CancellationHistoryResponse.fromJson(data);
 
           return {
             'success': true,
-            'data': overallStats,
-            'message': 'Statistics retrieved successfully',
+            'data': cancellationHistory,
+            'message': 'Cancellation history retrieved successfully',
           };
         } else {
           print('API returned success: false. Message: ${data['message']}');
           return {
             'success': false,
             'data': null,
-            'message': data['message'] ?? 'Failed to load statistics',
+            'message': data['message'] ?? 'Failed to load cancellation history',
           };
         }
       } else {
@@ -85,7 +92,7 @@ class StatsService {
         };
       }
     } catch (e) {
-      print('Error fetching overall ride statistics: ${e.toString()}');
+      print('Error fetching cancellation history: ${e.toString()}');
       return {
         'success': false,
         'data': null,

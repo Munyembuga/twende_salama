@@ -49,7 +49,7 @@ class RideCard extends StatelessWidget {
                 Text(
                   '${S.of(context)?.ride} ${ride['id']}',
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -155,7 +155,7 @@ class RideCard extends StatelessWidget {
                       Text(
                         ride['from'],
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -163,7 +163,7 @@ class RideCard extends StatelessWidget {
                       Text(
                         ride['to'],
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -211,7 +211,7 @@ class RideCard extends StatelessWidget {
                 Text(
                   ride['fare'],
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFA77D55),
                   ),

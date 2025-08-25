@@ -36,6 +36,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -313,6 +314,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -400,6 +402,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -486,6 +489,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -570,6 +574,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -656,6 +661,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -803,6 +809,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -893,6 +900,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -979,6 +987,7 @@ class DriverService {
   }) async {
     try {
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,
@@ -1022,6 +1031,7 @@ class DriverService {
     try {
       // Get the auth token
       final token = await StorageService.getToken();
+      print("token&&&&&&&&&&&&&&&: $token");
       if (token == null) {
         return {
           'success': false,

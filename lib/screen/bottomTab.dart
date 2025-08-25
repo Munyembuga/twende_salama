@@ -60,10 +60,10 @@ class _BottomNavigationScreenState extends State<BottomNavigation> {
   }
 
   void _onItemTapped(int index) {
-    if (_isGuestMode && index == 3) {
-      _showLoginPrompt();
-      return;
-    }
+    // if (_isGuestMode && index == 3) {
+    //   _showLoginPrompt();
+    //   return;
+    // }
 
     setState(() {
       _selectedIndex = index;

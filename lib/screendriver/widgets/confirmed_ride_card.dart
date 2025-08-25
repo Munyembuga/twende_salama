@@ -369,7 +369,8 @@ class _ConfirmedRideCardState extends State<ConfirmedRideCard> {
                             ),
                             label: Text(
                               _isNavigating ? s.pause : s.startNavigation,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
@@ -395,7 +396,8 @@ class _ConfirmedRideCardState extends State<ConfirmedRideCard> {
                             icon: const Icon(Icons.open_in_new,
                                 color: Colors.white),
                             label: Text(s.googleMaps,
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12)),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
                               padding: const EdgeInsets.symmetric(

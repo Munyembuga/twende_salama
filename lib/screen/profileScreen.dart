@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:twende/main.dart';
 import 'package:twende/services/stats_service.dart';
 import 'package:twende/models/overall_stats_model.dart';
+import 'package:twende/services/user_service.dart';
+import 'package:twende/models/guest_user_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -38,15 +40,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _hasStatsError = false;
   String _statsErrorMessage = '';
 
+  // Add guest user information variables
+  bool _isGuestMode = false;
+  GuestUserModel? _guestUserInfo;
+  bool _isLoadingGuestInfo = false;
+  bool _hasGuestInfoError = false;
+
   @override
   void initState() {
     super.initState();
+    _checkGuestMode();
     _loadUserData();
     _fetchOverallStats(); // Add this line
   }
 
+  Future<void> _checkGuestMode() async {
+    final isGuest = await StorageService.isGuestMode();
+    setState(() {
+      _isGuestMode = isGuest;
+    });
+
+    if (_isGuestMode) {
+      _fetchGuestUserInfo();
+      _fetchOverallStats();
+    }
+  }
+
+  Future<void> _fetchGuestUserInfo() async {
+    setState(() {
+      _isLoadingGuestInfo = true;
+      _hasGuestInfoError = false;
+    });
+
+    final result = await UserService.getGuestUserInfo();
+
+    if (result['success']) {
+      setState(() {
+        _guestUserInfo = result['data'];
+        _isLoadingGuestInfo = false;
+
+        // Update user profile info from guest data
+        firstName = _guestUserInfo?.firstName ?? '';
+        lastName = _guestUserInfo?.lastName ?? '';
+        email = _guestUserInfo?.email ?? '';
+        status = 'Guest';
+      });
+    } else {
+      setState(() {
+        _hasGuestInfoError = true;
+        _isLoadingGuestInfo = false;
+      });
+    }
+  }
+
   Future<void> _loadUserData() async {
     try {
+      // Skip this method if in guest mode, as we'll handle it in _fetchGuestUserInfo
+      if (await StorageService.isGuestMode()) {
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
       final userData = await StorageService.getUserData();
       final clientData = await StorageService.getClientData();
       final driverData = await StorageService.getDriverData();
@@ -344,7 +400,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final s = S.of(context)!;
 
-    if (isLoading) {
+    if (isLoading || _isLoadingGuestInfo) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
@@ -385,12 +441,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.white),
-                          onPressed: () {
-                            // Edit profile functionality
-                          },
-                        ),
+                        if (!_isGuestMode)
+                          IconButton(
+                            icon: const Icon(Icons.edit, color: Colors.white),
+                            onPressed: () {
+                              // Edit profile functionality
+                            },
+                          ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -428,38 +485,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               const SizedBox(height: 2),
-                              Text(
-                                email,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white70,
+                              if (email.isNotEmpty)
+                                Text(
+                                  email,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white70,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 4),
-                              // wallet.isNotEmpty
-                              //     ? Container(
-                              //         padding: const EdgeInsets.symmetric(
-                              //           horizontal: 8,
-                              //           vertical: 2,
-                              //         ),
-                              //         decoration: BoxDecoration(
-                              //           color: Colors.white.withOpacity(0.2),
-                              //           borderRadius: BorderRadius.circular(12),
-                              //           border: Border.all(
-                              //             color: Colors.white.withOpacity(0.5),
-                              //             width: 1,
-                              //           ),
-                              //         ),
-                              //         child: Text(
-                              //           '${s.wallet}: $wallet USD',
-                              //           style: const TextStyle(
-                              //             fontSize: 12,
-                              //             color: Colors.white,
-                              //             fontWeight: FontWeight.w500,
-                              //           ),
-                              //         ),
-                              //       )
-                              //     : const SizedBox.shrink(),
+                              if (_guestUserInfo?.phone != null &&
+                                  _guestUserInfo!.phone.isNotEmpty)
+                                Text(
+                                  _guestUserInfo!.phone,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                              if (_guestUserInfo != null)
+                                Text(
+                                  'Member since: ${_formatDate(_guestUserInfo!.memberSince)}',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white70,
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -470,9 +520,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: status.toLowerCase() == 'active'
-                                ? Colors.green
-                                : Colors.orange,
+                            color: _isGuestMode
+                                ? Colors.amber
+                                : (status.toLowerCase() == 'active'
+                                    ? Colors.green
+                                    : Colors.orange),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
@@ -488,9 +540,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                status.toLowerCase() == 'active'
-                                    ? s.active
-                                    : s.inactive,
+                                _isGuestMode
+                                    ? 'Guest'
+                                    : (status.toLowerCase() == 'active'
+                                        ? s.active
+                                        : s.inactive),
                                 style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.white,
@@ -849,6 +903,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
+  }
+
+  // Helper method to format date
+  String _formatDate(String dateString) {
+    try {
+      final date = DateTime.parse(dateString);
+      return '${date.day}/${date.month}/${date.year}';
+    } catch (_) {
+      return dateString;
+    }
   }
 }
 

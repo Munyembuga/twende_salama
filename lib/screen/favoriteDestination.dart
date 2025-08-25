@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twende/services/favorite_location_service.dart';
 import 'package:twende/models/favorite_location_model.dart';
+import 'package:twende/services/storage_service.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FavoriteDestinationsScreen extends StatefulWidget {
@@ -22,10 +23,20 @@ class _FavoriteDestinationsScreenState
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
+  bool _isGuestMode = false;
+
   @override
   void initState() {
     super.initState();
+    _checkGuestMode();
     _fetchFavoriteLocations();
+  }
+
+  Future<void> _checkGuestMode() async {
+    final isGuest = await StorageService.isGuestMode();
+    setState(() {
+      _isGuestMode = isGuest;
+    });
   }
 
   Future<void> _fetchFavoriteLocations() async {
@@ -655,7 +666,9 @@ class _FavoriteDestinationsScreenState
             ),
             const SizedBox(height: 24),
             Text(
-              'No Favorite Destinations',
+              _isGuestMode
+                  ? 'No Favorite Destinations Yet'
+                  : 'No Favorite Destinations',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -664,7 +677,9 @@ class _FavoriteDestinationsScreenState
             ),
             const SizedBox(height: 12),
             Text(
-              'Your frequently visited locations will appear here after you make some bookings',
+              _isGuestMode
+                  ? 'Your frequently visited locations will appear here as you use the app'
+                  : 'Add places you visit frequently to save time on future bookings',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,

@@ -1142,7 +1142,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             )
                           : Column(
                               children: [
-                                Row(
+                                Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [

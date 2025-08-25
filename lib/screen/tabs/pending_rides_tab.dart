@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:twende/l10n/l10n.dart'; // Add this import
+import 'package:twende/l10n/l10n.dart';
 import 'package:twende/screen/login.dart';
 import 'package:twende/services/auth_service.dart';
 import '../../services/booking_service.dart';
@@ -8,6 +8,7 @@ import '../widgets/ride_card.dart';
 import '../widgets/empty_state.dart';
 import '../../services/storage_service.dart';
 import '../../services/device_info_service.dart';
+import 'package:shimmer/shimmer.dart'; // Add this import for Shimmer
 
 class PendingRidesTab extends StatefulWidget {
   const PendingRidesTab({Key? key}) : super(key: key);
@@ -130,7 +131,7 @@ class _PendingRidesTabState extends State<PendingRidesTab> {
     final s = S.of(context)!; // Get localization
 
     if (_isLoading && _pendingBookings.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return _buildLoadingState(); // Use the shimmer loading state
     }
 
     if (_errorMessage.isNotEmpty && _pendingBookings.isEmpty) {
@@ -193,6 +194,28 @@ class _PendingRidesTabState extends State<PendingRidesTab> {
           },
         ),
       ),
+    );
+  }
+
+  // Add the loading state method
+  Widget _buildLoadingState() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 3,
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            height: 180,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+      },
     );
   }
 }

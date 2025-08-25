@@ -8,6 +8,7 @@ import '../../services/booking_service.dart';
 import 'ride_data.dart';
 import '../widgets/ride_card.dart';
 import '../widgets/empty_state.dart';
+import 'package:shimmer/shimmer.dart'; // Add this import for Shimmer
 
 class OnTripTab extends StatefulWidget {
   const OnTripTab({Key? key}) : super(key: key);
@@ -111,7 +112,7 @@ class _OnTripTabState extends State<OnTripTab> {
     final s = S.of(context)!;
 
     if (_isLoading && _onTripBookings.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return _buildLoadingState(); // Use the shimmer loading state
     }
 
     if (_errorMessage.isNotEmpty && _onTripBookings.isEmpty) {
@@ -155,6 +156,28 @@ class _OnTripTabState extends State<OnTripTab> {
           return RideCard(ride: ride);
         },
       ),
+    );
+  }
+
+  // Add the loading state method
+  Widget _buildLoadingState() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 3,
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            height: 180,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+      },
     );
   }
 
